@@ -1,0 +1,2838 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#B681DA" />
+<title>PoMP – Pyramids of Math &amp; Physics</title>
+<meta name="description" content="Hausaufgaben hochladen, in Pyramidenschritten lösen und mit Selbstkontrolle lernen. Mathematik und Physik, Schritt für Schritt." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23B681DA'/%3E%3Cpath d='M32 14 L52 48 H12 Z' fill='none' stroke='%23fff' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M22 34 h20 M17 42 h30' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E" />
+<style>
+  /* ---------------------------------------------------------------
+     PoMP Design System
+     Akzent #B681DA · Sekundär #7C3AED · Rot #DC2626
+     Flächen #F9FAFB / #FFFFFF · Text #111827 / #6B7280
+     Radius 12px · Raster 4 / 8 / 16 / 24
+  ---------------------------------------------------------------- */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --accent: #B681DA;
+    --accent-soft: #F3E9FB;
+    --accent-ink: #3B1B57;
+    --secondary: #7C3AED;
+    --danger: #DC2626;
+    --danger-soft: #FEF2F2;
+    --success: #15803D;
+    --success-soft: #F0FDF4;
+    --bg: #F9FAFB;
+    --card: #FFFFFF;
+    --text: #111827;
+    --muted: #6B7280;
+    --line: #E5E7EB;
+    --line-strong: #D1D5DB;
+    --radius: 12px;
+    --s1: 4px;
+    --s2: 8px;
+    --s3: 16px;
+    --s4: 24px;
+    --shadow-sm: 0 1px 2px rgba(17, 24, 39, .06);
+    --shadow: 0 1px 2px rgba(17, 24, 39, .05), 0 6px 18px rgba(17, 24, 39, .06);
+    --shadow-lg: 0 12px 40px rgba(17, 24, 39, .16);
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.modal-open { overflow: hidden; }
+  h1, h2, h3, h4, p { margin: 0; }
+  button { font: inherit; color: inherit; }
+  a { color: var(--accent-ink); }
+  a:hover { color: var(--secondary); }
+  ::selection { background: #E9D5FF; }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 var(--s3); }
+
+  /* ---------------- Topbar ---------------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 30;
+    background: rgba(255, 255, 255, .88);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: 880px; margin: 0 auto; padding: 10px var(--s3);
+    display: flex; align-items: center; gap: var(--s3);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .brand-mark {
+    width: 38px; height: 38px; flex: 0 0 38px;
+    border-radius: 11px;
+    background: linear-gradient(145deg, #C79AE6, #A567CE);
+    display: grid; place-items: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 2px 6px rgba(107, 63, 141, .28);
+  }
+  .brand-mark svg { display: block; }
+  .brand-name { font-weight: 800; letter-spacing: .2px; font-size: 17px; line-height: 1.1; }
+  .brand-sub { font-size: 11.5px; color: var(--muted); letter-spacing: .2px; }
+  .nav { margin-left: auto; display: flex; align-items: center; gap: var(--s2); }
+  .nav-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line); background: var(--card);
+    border-radius: 10px; padding: 8px 12px;
+    font-size: 13.5px; font-weight: 600; color: var(--text);
+    cursor: pointer; transition: background .15s, border-color .15s, transform .1s;
+  }
+  .nav-btn:hover { background: #F3F4F6; border-color: var(--line-strong); }
+  .nav-btn:active { transform: translateY(1px); }
+  .nav-btn .ic { color: var(--muted); }
+
+  /* ---------------- Layout ---------------- */
+  .main { padding: var(--s4) 0 64px; }
+  .page-head { display: flex; align-items: flex-end; gap: var(--s3); flex-wrap: wrap; margin-bottom: var(--s3); }
+  .page-title { font-size: 26px; line-height: 1.15; letter-spacing: -.4px; font-weight: 800; }
+  .page-sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .page-head .spacer { flex: 1; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: 0; padding: 6px 2px; margin-bottom: 10px;
+    color: var(--muted); font-size: 13.5px; font-weight: 600; cursor: pointer;
+  }
+  .back-btn:hover { color: var(--text); }
+
+  /* ---------------- Buttons ---------------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border: 1px solid transparent; border-radius: var(--radius);
+    padding: 11px 18px; font-size: 14.5px; font-weight: 700;
+    cursor: pointer; text-decoration: none; white-space: nowrap;
+    transition: filter .15s, background .15s, border-color .15s, transform .1s, box-shadow .15s;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .btn-primary { background: var(--accent); color: #2B0F42; box-shadow: 0 1px 2px rgba(107, 63, 141, .25); }
+  .btn-primary:hover:not(:disabled) { filter: brightness(1.04); }
+  .btn-secondary { background: var(--card); border-color: var(--line-strong); color: var(--text); }
+  .btn-secondary:hover:not(:disabled) { background: #F9FAFB; }
+  .btn-ghost { background: transparent; color: var(--muted); }
+  .btn-ghost:hover:not(:disabled) { background: #F3F4F6; color: var(--text); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover:not(:disabled) { filter: brightness(1.06); }
+  .btn-sm { padding: 7px 12px; font-size: 13px; border-radius: 10px; }
+  .btn-block { width: 100%; }
+  .btn-row { display: flex; gap: var(--s2); flex-wrap: wrap; }
+
+  .icon-btn {
+    width: 34px; height: 34px; display: grid; place-items: center;
+    border-radius: 10px; border: 1px solid transparent;
+    background: transparent; color: var(--muted); cursor: pointer;
+  }
+  .icon-btn:hover { background: #F3F4F6; color: var(--text); }
+  .icon-btn.danger:hover { background: var(--danger-soft); color: var(--danger); }
+
+  /* ---------------- Cards ---------------- */
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  }
+  .card-pad { padding: var(--s3); }
+  .stack { display: flex; flex-direction: column; gap: var(--s3); }
+  .stack-sm { display: flex; flex-direction: column; gap: var(--s2); }
+
+  /* ---------------- Banner ---------------- */
+  .banner {
+    display: flex; gap: var(--s3); align-items: flex-start;
+    border-radius: var(--radius); padding: var(--s3);
+    background: var(--accent-soft); border: 1px solid #E3CBF6;
+    color: var(--accent-ink); margin-bottom: var(--s3);
+  }
+  .banner .banner-body { flex: 1; min-width: 0; }
+  .banner strong { display: block; font-size: 14.5px; margin-bottom: 2px; }
+  .banner p { font-size: 13.5px; color: #5B3B75; }
+  .banner.warn { background: #FFFBEB; border-color: #FDE68A; color: #78350F; }
+  .banner.warn p { color: #92400E; }
+  .banner.error { background: var(--danger-soft); border-color: #FECACA; color: #7F1D1D; }
+  .banner.error p { color: #991B1B; }
+
+  /* ---------------- Empty state ---------------- */
+  .empty {
+    text-align: center; padding: 56px var(--s4);
+    border: 1px dashed var(--line-strong); border-radius: var(--radius);
+    background: #fff;
+  }
+  .empty .glyph { font-size: 34px; line-height: 1; margin-bottom: var(--s2); }
+  .empty h3 { font-size: 17px; margin-bottom: 6px; }
+  .empty p { color: var(--muted); font-size: 14px; max-width: 380px; margin: 0 auto var(--s3); }
+
+  /* ---------------- Upload list ---------------- */
+  .upload-card { display: flex; gap: var(--s3); padding: var(--s3); align-items: flex-start; }
+  .file-thumb {
+    width: 46px; height: 46px; flex: 0 0 46px; border-radius: 10px;
+    background: #F3F4F6; border: 1px solid var(--line);
+    display: grid; place-items: center; color: var(--muted); font-size: 11px; font-weight: 800;
+  }
+  .file-thumb.pdf { background: var(--danger-soft); border-color: #FECACA; color: #B91C1C; }
+  .file-thumb.img { background: var(--accent-soft); border-color: #E3CBF6; color: #7E3FA8; }
+  .upload-body { flex: 1; min-width: 0; }
+  .upload-name { font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .upload-meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .upload-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .upload-foot { margin-top: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    border-radius: 999px; padding: 3px 10px; font-size: 11.5px; font-weight: 700;
+    background: #F3F4F6; color: var(--muted); border: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .badge.accent { background: var(--accent-soft); color: #6B2C91; border-color: #E3CBF6; }
+  .badge.success { background: var(--success-soft); color: var(--success); border-color: #BBF7D0; }
+  .badge.error { background: var(--danger-soft); color: #B91C1C; border-color: #FECACA; }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .badge.live .dot { animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+  .bar { height: 6px; border-radius: 999px; background: #EDEFF3; overflow: hidden; flex: 1; min-width: 90px; }
+  .bar > span { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .35s ease; }
+  .bar-label { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+
+  /* ---------------- Pyramid ---------------- */
+  .pyramid-shell { padding: var(--s3) var(--s3) var(--s2); }
+  .pyramid {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    padding: var(--s3) 0 var(--s2);
+  }
+  .pyr-block {
+    width: 100%; border: 0; padding: 11px 26px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 13px; font-weight: 700; color: #4B5563; text-align: center;
+    background: #F1F2F5; cursor: default;
+    clip-path: polygon(5% 0, 95% 0, 100% 100%, 0 100%);
+    transition: background .18s, color .18s, transform .18s;
+    min-height: 42px;
+  }
+  .pyr-block .num {
+    display: inline-grid; place-items: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    font-size: 10.5px; font-weight: 800;
+    background: rgba(17,24,39,.08); color: #4B5563;
+  }
+  .pyr-block.done { background: #EFE1F8; color: #5B2A7C; }
+  .pyr-block.done .num { background: var(--accent); color: #2B0F42; }
+  .pyr-block.active {
+    background: var(--accent); color: #2B0F42;
+    box-shadow: 0 6px 18px rgba(182, 129, 218, .45);
+    transform: scale(1.015);
+  }
+  .pyr-block.active .num { background: #2B0F42; color: #fff; }
+  .pyr-block.locked { opacity: .75; }
+  .pyr-block.clickable { cursor: pointer; }
+  .pyr-block.clickable:hover { filter: brightness(.97); }
+  .pyr-block.review { outline: 2px solid var(--secondary); outline-offset: -2px; }
+
+  .pyramid-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); padding: 4px 2px 10px; flex-wrap: wrap; }
+
+  /* ---------------- Subtask chips ---------------- */
+  .chips { display: flex; gap: var(--s2); flex-wrap: wrap; margin-bottom: var(--s3); }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid var(--line-strong); background: #fff; color: var(--muted);
+    border-radius: 999px; padding: 6px 13px; font-size: 13px; font-weight: 700; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--text); }
+  .chip.active { background: var(--accent-soft); border-color: var(--accent); color: #5B2A7C; }
+  .chip.done { color: var(--success); border-color: #BBF7D0; background: var(--success-soft); }
+  .chip.done.active { border-color: var(--accent); }
+
+  /* ---------------- Step card ---------------- */
+  .step-card { padding: var(--s4); }
+  .step-kicker {
+    display: flex; align-items: center; gap: var(--s2);
+    font-size: 11.5px; font-weight: 800; letter-spacing: .8px;
+    text-transform: uppercase; color: #8B5BAE; margin-bottom: var(--s2);
+  }
+  .step-title { font-size: 21px; line-height: 1.25; font-weight: 800; letter-spacing: -.3px; }
+  .step-task { margin-top: var(--s2); font-size: 15.5px; color: #374151; white-space: pre-wrap; }
+
+  .field-label { display: block; font-size: 12.5px; font-weight: 700; color: var(--muted); margin: var(--s4) 0 var(--s2); }
+  .answer-input {
+    width: 100%; min-height: 92px; resize: vertical;
+    border: 1.5px solid var(--line-strong); border-radius: var(--radius);
+    padding: 12px 14px; font: inherit; background: #fff; color: var(--text);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .answer-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(182, 129, 218, .18); }
+  .input-help { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .hint-box {
+    margin-top: var(--s3); border-radius: var(--radius);
+    background: #FAF7FD; border: 1px solid #EADCF6; padding: 12px 14px;
+    font-size: 14px; color: #4C2A66; white-space: pre-wrap;
+  }
+  .hint-box .hint-head { font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; color: #8B5BAE; margin-bottom: 4px; }
+  .hint-box + .hint-box { margin-top: var(--s2); }
+
+  .solution-box {
+    margin-top: var(--s3); border-radius: var(--radius);
+    background: #F8FAFC; border: 1px solid #E2E8F0; padding: 14px 16px;
+  }
+  .solution-box .sol-label { font-size: 11.5px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: #475569; margin-bottom: 6px; }
+  .solution-box .sol-answer { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 8px; white-space: pre-wrap; }
+  .solution-box .sol-path { font-size: 14px; color: #334155; white-space: pre-wrap; }
+
+  .verdict { margin-top: var(--s3); }
+  .verdict p { font-size: 14px; font-weight: 700; margin-bottom: var(--s2); }
+  .verdict.ok { color: var(--success); }
+  .verdict.bad { color: #B45309; }
+
+  .notice {
+    margin-top: var(--s3); border-radius: var(--radius);
+    border: 1px solid #FDE68A; background: #FFFBEB; padding: 12px 14px;
+    font-size: 13.5px; color: #78350F;
+  }
+  .notice strong { display: block; margin-bottom: 2px; }
+  .source-list { list-style: none; margin: var(--s2) 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .source-list a { display: inline-flex; gap: 6px; align-items: baseline; font-size: 13.5px; font-weight: 600; color: #6B2C91; text-decoration: underline; text-underline-offset: 2px; word-break: break-word; }
+  .source-list .src-host { color: var(--muted); font-weight: 500; font-size: 12px; }
+
+  .step-nav { margin-top: var(--s4); display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
+  .step-nav .spacer { flex: 1; }
+
+  .done-panel { text-align: center; padding: var(--s4) var(--s3); }
+  .done-badge {
+    width: 60px; height: 60px; border-radius: 50%; margin: 0 auto var(--s3);
+    background: var(--accent-soft); color: #6B2C91; display: grid; place-items: center;
+    border: 1px solid #E3CBF6;
+  }
+  .done-panel h2 { font-size: 21px; margin-bottom: 6px; }
+  .done-panel p { color: var(--muted); font-size: 14px; margin-bottom: var(--s3); }
+
+  /* ---------------- Summary ---------------- */
+  .summary-card { padding: var(--s3); }
+  .summary-card h3 { font-size: 15.5px; display: flex; align-items: center; gap: 8px; }
+  .summary-card h3 .tag { font-size: 11px; font-weight: 800; color: #6B2C91; background: var(--accent-soft); border: 1px solid #E3CBF6; padding: 2px 8px; border-radius: 999px; }
+  .summary-section { margin-top: var(--s3); }
+  .summary-section .label { font-size: 11.5px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .summary-section .body { font-size: 14.5px; white-space: pre-wrap; }
+  .summary-section.mistake { background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; padding: 10px 12px; }
+  .summary-section.mistake .body { color: #78350F; }
+  .summary-section.practice { background: #FAF7FD; border: 1px solid #EADCF6; border-radius: 10px; padding: 10px 12px; }
+  .summary-section.practice .label { color: #8B5BAE; }
+  .reveal-solution {
+    margin-top: var(--s2); background: none; border: 0; padding: 0; cursor: pointer;
+    color: #6B2C91; font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 2px;
+  }
+  .practice-solution { margin-top: var(--s2); padding-top: var(--s2); border-top: 1px dashed #D8C7E8; font-size: 13.5px; white-space: pre-wrap; color: #4C2A66; }
+
+  /* ---------------- Settings ---------------- */
+  .settings-card { padding: var(--s4); max-width: 640px; }
+  .key-row { display: flex; gap: var(--s2); align-items: stretch; }
+  .key-row .text-input { flex: 1; }
+  .text-input, .select-input {
+    width: 100%; border: 1.5px solid var(--line-strong); border-radius: var(--radius);
+    padding: 11px 13px; font: inherit; color: var(--text); background: #fff;
+  }
+  .text-input:focus, .select-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(182, 129, 218, .18); }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; letter-spacing: .2px; }
+  .help { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+  .divider { height: 1px; background: var(--line); margin: var(--s4) 0; }
+  .kv { display: flex; justify-content: space-between; gap: var(--s3); font-size: 13.5px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+  .kv:last-child { border-bottom: 0; }
+  .kv span:first-child { color: var(--muted); }
+  .kv span:last-child { font-weight: 600; text-align: right; }
+
+  /* ---------------- Modal ---------------- */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(17, 24, 39, .45);
+    display: grid; place-items: center; padding: var(--s3);
+    animation: fade .16s ease;
+  }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    width: 100%; max-width: 460px; background: #fff; border-radius: var(--radius);
+    box-shadow: var(--shadow-lg); padding: var(--s4); animation: pop .18s ease;
+  }
+  @keyframes pop { from { transform: translateY(8px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal h2 { font-size: 19px; letter-spacing: -.2px; margin-bottom: var(--s2); }
+  .modal p { color: var(--muted); font-size: 14px; }
+  .modal .modal-actions { display: flex; gap: var(--s2); justify-content: flex-end; margin-top: var(--s4); flex-wrap: wrap; }
+  .modal .modal-actions .btn-danger { margin-left: auto; }
+  .modal .modal-icon {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    background: var(--danger-soft); color: var(--danger); margin-bottom: var(--s3);
+  }
+
+  /* ---------------- Toast ---------------- */
+  .toast-root { position: fixed; z-index: 200; left: 50%; bottom: 24px; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; width: min(440px, calc(100vw - 32px)); }
+  .toast {
+    background: #111827; color: #fff; border-radius: 10px; padding: 11px 14px;
+    font-size: 13.5px; box-shadow: var(--shadow-lg);
+    display: flex; gap: 10px; align-items: flex-start;
+    animation: toastIn .2s ease;
+  }
+  .toast.error { background: #991B1B; }
+  .toast.success { background: #166534; }
+  .toast .toast-close { margin-left: auto; background: none; border: 0; color: rgba(255,255,255,.7); cursor: pointer; font-size: 16px; line-height: 1; padding: 0 2px; }
+  @keyframes toastIn { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* ---------------- Spinner ---------------- */
+  .spinner {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid rgba(17, 24, 39, .18); border-top-color: currentColor;
+    display: inline-block; animation: spin .7s linear infinite;
+  }
+  .spinner.lg { width: 26px; height: 26px; border-width: 3px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------------- Print / Export stage ---------------- */
+  .stage { position: fixed; left: -20000px; top: 0; width: 794px; background: #fff; z-index: -1; }
+  .doc { width: 794px; background: #fff; color: #111827; padding: 48px 52px; font-family: var(--font); }
+  .doc-brand { display: flex; align-items: center; gap: 12px; padding-bottom: 18px; border-bottom: 2px solid #B681DA; }
+  .doc-brand .doc-logo { width: 44px; height: 44px; border-radius: 12px; background: #B681DA; display: grid; place-items: center; }
+  .doc-brand .doc-name { font-size: 19px; font-weight: 800; letter-spacing: .2px; }
+  .doc-brand .doc-sub { font-size: 12px; color: #6B7280; }
+  .doc-title { font-size: 24px; font-weight: 800; margin: 26px 0 4px; letter-spacing: -.4px; }
+  .doc-meta { font-size: 12.5px; color: #6B7280; margin-bottom: 26px; }
+  .doc-sec { border: 1px solid #E5E7EB; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+  .doc-sec h3 { font-size: 16px; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+  .doc-sec h3 .doc-tag { font-size: 10.5px; font-weight: 800; color: #6B2C91; background: #F3E9FB; border: 1px solid #E3CBF6; padding: 2px 8px; border-radius: 999px; }
+  .doc-block { margin-bottom: 12px; }
+  .doc-block:last-child { margin-bottom: 0; }
+  .doc-label { font-size: 10.5px; font-weight: 800; letter-spacing: .7px; text-transform: uppercase; color: #6B7280; margin-bottom: 3px; }
+  .doc-text { font-size: 13.5px; line-height: 1.55; white-space: pre-wrap; }
+  .doc-warn { background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; padding: 10px 12px; }
+  .doc-warn .doc-text { color: #78350F; }
+  .doc-practice { background: #FAF7FD; border: 1px solid #EADCF6; border-radius: 10px; padding: 10px 12px; }
+  .doc-practice .doc-label { color: #8B5BAE; }
+  .doc-sol { margin-top: 6px; padding-top: 6px; border-top: 1px dashed #D8C7E8; font-size: 12.5px; color: #4C2A66; white-space: pre-wrap; }
+  .doc-foot { margin-top: 24px; padding-top: 14px; border-top: 1px solid #E5E7EB; display: flex; justify-content: space-between; gap: 12px; font-size: 11px; color: #6B7280; }
+  .doc-foot .grp { display: flex; flex-direction: column; gap: 2px; }
+  .doc-foot .grp:last-child { text-align: right; }
+
+  /* ---------------- Utility ---------------- */
+  .muted { color: var(--muted); }
+  .small { font-size: 12.5px; }
+  .strong { font-weight: 700; }
+  .mt-1 { margin-top: var(--s1); } .mt-2 { margin-top: var(--s2); }
+  .mt-3 { margin-top: var(--s3); } .mt-4 { margin-top: var(--s4); }
+  .mb-2 { margin-bottom: var(--s2); } .mb-3 { margin-bottom: var(--s3); }
+  .center { text-align: center; }
+  .row { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  :focus-visible { outline: 3px solid rgba(124, 58, 237, .55); outline-offset: 2px; border-radius: 6px; }
+
+  @media (max-width: 640px) {
+    body { font-size: 14.5px; }
+    .wrap, .topbar-inner { padding-left: 14px; padding-right: 14px; }
+    .main { padding-top: var(--s3); }
+    .page-title { font-size: 22px; }
+    .brand-sub { display: none; }
+    .nav-btn span.label { display: none; }
+    .nav-btn { padding: 9px; }
+    .upload-card { flex-wrap: wrap; }
+    .upload-actions { width: 100%; justify-content: flex-end; }
+    .upload-foot { width: 100%; }
+    .step-card { padding: var(--s3); }
+    .step-title { font-size: 19px; }
+    .solution-box, .hint-box { padding: 11px 12px; }
+    .btn { padding: 11px 15px; }
+    .pyramid-shell { padding: var(--s2) var(--s2) 0; }
+    .pyr-block { font-size: 12px; padding: 10px 20px; min-height: 40px; }
+    .modal { padding: var(--s3); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
+            <path d="M32 13 L53 49 H11 Z" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M22 34 h20 M17 42 h30" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">PoMP</div>
+          <div class="brand-sub">Pyramids of Math &amp; Physics</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <button class="nav-btn" data-action="go-list" title="Meine Uploads">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="label">Meine Uploads</span>
+        </button>
+        <button class="nav-btn" data-action="go-settings" title="Einstellungen">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.7 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.7 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.7h.03A1.7 1.7 0 0 0 10 3.14V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.3 9v.03a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1.03Z" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="label">Einstellungen</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app" class="main" tabindex="-1"></main>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-root" role="status" aria-live="polite"></div>
+  <div id="stage" class="stage" aria-hidden="true"></div>
+
+  <input id="file-input" type="file" accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf" multiple hidden />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
+
+<script>
+/* =====================================================================
+   PoMP – Pyramids of Math & Physics
+   Single-File-Web-App für Vercel.
+
+   • Alle Daten (Uploads, Pyramiden, Hinweise, Fortschritt, Zusammen-
+     fassungen, Gemini-Schlüssel) liegen ausschließlich in IndexedDB
+     im Browser. Nur die anonyme Sitzungs-ID steht im localStorage.
+   • KI-Anfragen gehen direkt vom Browser an Google Gemini
+     (Schlüssel im Request-Header, nie in Logs gespeichert).
+   • Es gibt keinen Server, keine Anmeldung, keine Datenbank.
+   ===================================================================== */
+(function () {
+  'use strict';
+
+  /* ------------------------------------------------------------------
+     Konstanten
+  ------------------------------------------------------------------ */
+  var SESSION_KEY = 'pomp_session_id';
+  var PRIVACY_KEY = 'pomp_privacy_ack';
+  var DEFAULT_MODEL = 'gemini-2.5-flash';
+  var MODEL_OPTIONS = ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-2.5-flash-lite', 'gemini-flash-latest'];
+  var FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-flash-latest'];
+  var MAX_PAGES = 10;
+  var MAX_FILE_MB = 12;
+  var MAX_IMAGE_EDGE = 1568;
+
+  var S = {
+    view: 'list',
+    uploadId: null,
+    subtaskId: null,
+    reviewStepId: null,
+    uploads: [],
+    analyses: {},
+    progress: {},
+    summaries: {},
+    settings: {},
+    draft: {},
+    searchState: {},
+    summaryInFlight: {},
+    analyzing: {},
+    showPractice: {},
+    settingsKeyDraft: null,
+    bootError: null
+  };
+
+  /* ------------------------------------------------------------------
+     Kleine Helfer
+  ------------------------------------------------------------------ */
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  function esc(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function uid(prefix) {
+    var rnd;
+    if (window.crypto && crypto.randomUUID) rnd = crypto.randomUUID();
+    else rnd = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return (prefix || 'id') + '_' + rnd;
+  }
+
+  function nowIso() { return new Date().toISOString(); }
+
+  function fmtDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) +
+      ', ' + d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function fmtBytes(n) {
+    if (!n && n !== 0) return '';
+    if (n < 1024) return n + ' B';
+    if (n < 1024 * 1024) return Math.round(n / 1024) + ' KB';
+    return (n / (1024 * 1024)).toFixed(1).replace('.', ',') + ' MB';
+  }
+
+  function hostOf(url) {
+    try { return new URL(url).hostname.replace(/^www\./, ''); } catch (e) { return ''; }
+  }
+
+  function isHttpUrl(url) {
+    try { var u = new URL(url); return u.protocol === 'http:' || u.protocol === 'https:'; } catch (e) { return false; }
+  }
+
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  function withTimeout(promise, ms, error) {
+    return new Promise(function (resolve, reject) {
+      var timer = setTimeout(function () { reject(error || new AppError('TIMEOUT', 'Zeitüberschreitung.')); }, ms);
+      promise.then(function (value) {
+        clearTimeout(timer);
+        resolve(value);
+      }, function (err) {
+        clearTimeout(timer);
+        reject(err);
+      });
+    });
+  }
+
+  function safeText(value, fallback) {
+    if (typeof value === 'string' && value.trim()) return value.trim();
+    return fallback || '';
+  }
+
+  function errText(err) {
+    if (!err) return 'Unbekannter Fehler.';
+    if (err instanceof AppError) return err.message;
+    if (err.message) return err.message;
+    return String(err);
+  }
+
+  function AppError(code, message) {
+    this.name = 'AppError';
+    this.code = code;
+    this.message = message;
+    this.stack = (new Error()).stack;
+  }
+  AppError.prototype = Object.create(Error.prototype);
+  AppError.prototype.constructor = AppError;
+
+  /* ------------------------------------------------------------------
+     Toast + Modal
+  ------------------------------------------------------------------ */
+  function toast(message, kind) {
+    var root = $('#toast-root');
+    if (!root) return;
+    var el = document.createElement('div');
+    el.className = 'toast' + (kind ? ' ' + kind : '');
+    el.innerHTML = '<span>' + esc(message) + '</span><button class="toast-close" type="button" aria-label="Hinweis schließen">&times;</button>';
+    el.querySelector('.toast-close').addEventListener('click', function () { el.remove(); });
+    root.appendChild(el);
+    setTimeout(function () { if (el.parentNode) el.remove(); }, kind === 'error' ? 8000 : 4200);
+  }
+
+  var modalLastFocus = null;
+
+  function openModal(html) {
+    var root = $('#modal-root');
+    if (!root) return null;
+    modalLastFocus = document.activeElement;
+    root.innerHTML = '<div class="modal-backdrop" data-action="backdrop">' + html + '</div>';
+    document.body.classList.add('modal-open');
+    var first = root.querySelector('[data-autofocus]') || root.querySelector('button');
+    if (first) setTimeout(function () { first.focus(); }, 20);
+    return root;
+  }
+
+  function closeModal() {
+    var root = $('#modal-root');
+    if (root) root.innerHTML = '';
+    document.body.classList.remove('modal-open');
+    if (modalLastFocus && modalLastFocus.focus) { try { modalLastFocus.focus(); } catch (e) {} }
+    modalLastFocus = null;
+  }
+
+  function modalOpen() { return !!document.querySelector('#modal-root .modal-backdrop'); }
+
+  /* ------------------------------------------------------------------
+     IndexedDB
+  ------------------------------------------------------------------ */
+  var DB_NAME = 'pomp-db';
+  var DB_VERSION = 1;
+  var dbPromise = null;
+
+  function openDb() {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise(function (resolve, reject) {
+      if (!window.indexedDB) {
+        reject(new AppError('NO_IDB', 'Dein Browser kann keine lokalen Daten speichern. Bitte nutze einen aktuellen Browser.'));
+        return;
+      }
+      var req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = function () {
+        var db = req.result;
+        if (!db.objectStoreNames.contains('uploads')) db.createObjectStore('uploads', { keyPath: 'upload_id' });
+        if (!db.objectStoreNames.contains('analyses')) db.createObjectStore('analyses', { keyPath: 'upload_id' });
+        if (!db.objectStoreNames.contains('progress')) db.createObjectStore('progress', { keyPath: 'id' });
+        if (!db.objectStoreNames.contains('summaries')) db.createObjectStore('summaries', { keyPath: 'upload_id' });
+        if (!db.objectStoreNames.contains('settings')) db.createObjectStore('settings', { keyPath: 'key' });
+      };
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { reject(req.error || new Error('IndexedDB konnte nicht geöffnet werden.')); };
+      req.onblocked = function () { reject(new Error('Die lokale Datenbank ist blockiert. Bitte andere Tabs schließen.')); };
+    });
+    return dbPromise;
+  }
+
+  function idbGet(store, key) {
+    return openDb().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        var req = db.transaction(store, 'readonly').objectStore(store).get(key);
+        req.onsuccess = function () { resolve(req.result); };
+        req.onerror = function () { reject(req.error); };
+      });
+    });
+  }
+
+  function idbAll(store) {
+    return openDb().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        var req = db.transaction(store, 'readonly').objectStore(store).getAll();
+        req.onsuccess = function () { resolve(req.result || []); };
+        req.onerror = function () { reject(req.error); };
+      });
+    });
+  }
+
+  function idbPut(store, value) {
+    return openDb().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        var t = db.transaction(store, 'readwrite');
+        t.objectStore(store).put(value);
+        t.oncomplete = function () { resolve(value); };
+        t.onerror = function () { reject(t.error); };
+        t.onabort = function () { reject(t.error || new Error('Speichern fehlgeschlagen.')); };
+      });
+    });
+  }
+
+  function idbDelete(store, key) {
+    return openDb().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        var t = db.transaction(store, 'readwrite');
+        t.objectStore(store).delete(key);
+        t.oncomplete = function () { resolve(); };
+        t.onerror = function () { reject(t.error); };
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Einstellungen & Sitzung
+  ------------------------------------------------------------------ */
+  function getSetting(key, fallback) {
+    return idbGet('settings', key).then(function (row) {
+      if (!row || typeof row.value === 'undefined') return fallback;
+      return row.value;
+    }).catch(function () { return fallback; });
+  }
+
+  function setSetting(key, value) {
+    return idbPut('settings', { key: key, value: value });
+  }
+
+  function getApiKey() {
+    return getSetting('gemini_key', '').then(function (v) { return typeof v === 'string' ? v.trim() : ''; });
+  }
+
+  function getModel() {
+    return getSetting('gemini_model', DEFAULT_MODEL).then(function (v) {
+      return MODEL_OPTIONS.indexOf(v) >= 0 ? v : DEFAULT_MODEL;
+    });
+  }
+
+  function getSessionId() {
+    var id = null;
+    try { id = localStorage.getItem(SESSION_KEY); } catch (e) {}
+    if (!id) {
+      id = uid('ses');
+      try { localStorage.setItem(SESSION_KEY, id); } catch (e) {}
+    }
+    return id;
+  }
+
+  /* ------------------------------------------------------------------
+     Gemini (direkt aus dem Browser)
+  ------------------------------------------------------------------ */
+  function apiErrorMessage(data) {
+    if (data && data.error && data.error.message) return String(data.error.message).slice(0, 300);
+    return '';
+  }
+
+  function geminiRequest(opts) {
+    opts = opts || {};
+    return getApiKey().then(function (key) {
+      if (!key) throw new AppError('NO_KEY', 'Bitte Gemini-Schlüssel in den Einstellungen eintragen.');
+      return getModel().then(function (preferred) {
+        var models = [preferred].concat(FALLBACK_MODELS.filter(function (m) { return m !== preferred; }));
+        var lastErr = null;
+
+        function attempt(i) {
+          if (i >= models.length) {
+            throw lastErr || new AppError('MODEL', 'Kein Gemini-Modell erreichbar. Bitte prüfe das Modell in den Einstellungen.');
+          }
+          var model = models[i];
+          var controller = null;
+          var timer = null;
+          try { controller = new AbortController(); } catch (e) { controller = null; }
+          if (controller) timer = setTimeout(function () { controller.abort(); }, opts.timeoutMs || 150000);
+
+          var body = { contents: [{ role: 'user', parts: opts.parts || [] }] };
+          if (opts.system) body.systemInstruction = { role: 'system', parts: [{ text: opts.system }] };
+          body.generationConfig = {
+            temperature: typeof opts.temperature === 'number' ? opts.temperature : 0.25,
+            maxOutputTokens: opts.maxOutputTokens || 8192
+          };
+          if (opts.json) body.generationConfig.responseMimeType = 'application/json';
+          if (opts.tools) body.tools = opts.tools;
+
+          var init = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+            body: JSON.stringify(body)
+          };
+          if (controller) init.signal = controller.signal;
+
+          return fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', init)
+            .then(function (res) {
+              if (timer) clearTimeout(timer);
+              if (res.status === 404) {
+                lastErr = new AppError('MODEL', 'Das Modell „' + model + '“ ist nicht verfügbar.');
+                return attempt(i + 1);
+              }
+              return res.json().catch(function () { return null; }).then(function (data) {
+                if (!res.ok) {
+                  var detail = apiErrorMessage(data);
+                  if (res.status === 400) throw new AppError('BAD_REQUEST', detail || 'Die KI-Anfrage war ungültig. Bitte prüfe Datei und Schlüssel.');
+                  if (res.status === 401 || res.status === 403) throw new AppError('AUTH', 'Der Gemini-Schlüssel wurde abgelehnt. Bitte prüfe ihn in den Einstellungen.');
+                  if (res.status === 429) throw new AppError('QUOTA', 'Das kostenlose Gemini-Limit ist gerade erreicht. Bitte ein paar Minuten warten.');
+                  if (res.status >= 500) throw new AppError('SERVER', 'Gemini ist gerade nicht erreichbar. Bitte erneut versuchen.');
+                  throw new AppError('HTTP', detail || ('Gemini antwortete mit Fehler ' + res.status + '.'));
+                }
+                var cand = data && data.candidates && data.candidates[0];
+                var blocked = data && data.promptFeedback && data.promptFeedback.blockReason;
+                if (blocked) throw new AppError('BLOCKED', 'Die KI konnte diese Inhalte nicht verarbeiten. Bitte prüfe die Datei.');
+                if (!cand) throw new AppError('EMPTY', 'Die KI hat keine Antwort geliefert. Bitte erneut versuchen.');
+                var text = (cand.content && cand.content.parts ? cand.content.parts : [])
+                  .map(function (p) { return p && p.text ? p.text : ''; })
+                  .join('')
+                  .trim();
+                if (!text) {
+                  if (cand.finishReason === 'SAFETY' || cand.finishReason === 'RECITATION') {
+                    throw new AppError('BLOCKED', 'Die KI konnte diese Aufgabe nicht bearbeiten. Bitte prüfe die Datei.');
+                  }
+                  throw new AppError('EMPTY', 'Die KI hat keine Antwort geliefert. Bitte erneut versuchen.');
+                }
+                if (opts.json && cand.finishReason === 'MAX_TOKENS') {
+                  throw new AppError('TOO_LONG', 'Die Aufgabe ist zu umfangreich für eine Antwort. Bitte lade weniger Seiten auf einmal hoch.');
+                }
+                return { text: text, data: data, model: model };
+              });
+            })
+            .catch(function (err) {
+              if (timer) clearTimeout(timer);
+              if (err && err.name === 'AbortError') throw new AppError('TIMEOUT', 'Die Anfrage dauert zu lange. Bitte erneut versuchen.');
+              if (err instanceof TypeError) throw new AppError('NETWORK', 'Keine Verbindung zu Gemini. Bitte prüfe deine Internetverbindung.');
+              if (err instanceof AppError) {
+                if (err.code === 'MODEL') { lastErr = err; return attempt(i + 1); }
+                throw err;
+              }
+              throw err;
+            });
+        }
+
+        return attempt(0);
+      });
+    });
+  }
+
+  function parseJsonLoose(text) {
+    if (!text) throw new AppError('PARSE', 'Die KI-Antwort war leer. Bitte erneut versuchen.');
+    var t = String(text).trim();
+    t = t.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+    var start = t.indexOf('{');
+    var end = t.lastIndexOf('}');
+    if (start === -1 || end === -1 || end <= start) {
+      throw new AppError('PARSE', 'Die KI-Antwort war unvollständig. Bitte erneut versuchen.');
+    }
+    try {
+      return JSON.parse(t.slice(start, end + 1));
+    } catch (e) {
+      throw new AppError('PARSE', 'Die KI-Antwort konnte nicht gelesen werden. Bitte erneut versuchen.');
+    }
+  }
+
+  function geminiJson(opts) {
+    var o = Object.assign({}, opts, { json: true });
+    return geminiRequest(o).then(function (r) {
+      return { json: parseJsonLoose(r.text), raw: r };
+    });
+  }
+
+  /* ==================================================================
+     Dateien vorbereiten (JPG / PNG / PDF)
+  ================================================================== */
+  S.hintLoading = {};
+  S.sourcesLoading = {};
+
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var res = String(reader.result || '');
+        var comma = res.indexOf(',');
+        resolve(comma >= 0 ? res.slice(comma + 1) : res);
+      };
+      reader.onerror = function () { reject(new AppError('READ', 'Die Datei konnte nicht gelesen werden.')); };
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  function loadImageEl(url) {
+    return new Promise(function (resolve, reject) {
+      var img = new Image();
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { reject(new AppError('IMAGE', 'Das Bild konnte nicht gelesen werden.')); };
+      img.src = url;
+    });
+  }
+
+  async function imagePart(file) {
+    var url = URL.createObjectURL(file);
+    try {
+      var img = await loadImageEl(url);
+      var w = img.naturalWidth || img.width;
+      var h = img.naturalHeight || img.height;
+      if (!w || !h) throw new AppError('IMAGE', 'Das Bild hat keine lesbare Größe.');
+      var scale = Math.min(1, MAX_IMAGE_EDGE / Math.max(w, h));
+      var cw = Math.max(1, Math.round(w * scale));
+      var ch = Math.max(1, Math.round(h * scale));
+      var canvas = document.createElement('canvas');
+      canvas.width = cw;
+      canvas.height = ch;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, cw, ch);
+      ctx.drawImage(img, 0, 0, cw, ch);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+      return { mime_type: 'image/jpeg', data: dataUrl.split(',')[1] };
+    } catch (err) {
+      // Fallback: Originalbytes senden
+      var raw = await blobToBase64(file);
+      return { mime_type: file.type || 'image/jpeg', data: raw };
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  async function countPdfPages(file) {
+    // Seitenzahl ist nur eine Komfort-Prüfung. Wenn pdf.js fehlt oder hängt,
+    // geben wir 0 zurück und lassen Gemini die Seiten selbst zählen.
+    if (!window.pdfjsLib) return 0;
+    try {
+      var buf = await file.arrayBuffer();
+      var doc = await withTimeout(
+        window.pdfjsLib.getDocument({ data: buf }).promise,
+        20000,
+        new AppError('PDF_TIMEOUT', 'Das PDF konnte nicht geprüft werden.')
+      );
+      return doc.numPages || 0;
+    } catch (e) {
+      if (e instanceof AppError) return 0;
+      return 0;
+    }
+  }
+
+  async function validateFile(file) {
+    var name = file && file.name ? file.name : 'Datei';
+    var lower = name.toLowerCase();
+    var isPdf = file.type === 'application/pdf' || /\.pdf$/.test(lower);
+    var isPng = file.type === 'image/png' || /\.png$/.test(lower);
+    var isJpg = file.type === 'image/jpeg' || file.type === 'image/jpg' || /\.(jpe?g)$/.test(lower);
+    if (!isPdf && !isPng && !isJpg) {
+      throw new AppError('TYPE', '„' + name + '“ ist kein unterstütztes Format. Erlaubt sind JPG, PNG und PDF.');
+    }
+    if (file.size > MAX_FILE_MB * 1024 * 1024) {
+      throw new AppError('SIZE', '„' + name + '“ ist größer als ' + MAX_FILE_MB + ' MB. Bitte verkleinere die Datei.');
+    }
+    var pages = 1;
+    if (isPdf) {
+      pages = await countPdfPages(file);
+      if (pages > MAX_PAGES) {
+        throw new AppError('PAGES', '„' + name + '“ hat ' + pages + ' Seiten. Erlaubt sind maximal ' + MAX_PAGES + ' Seiten.');
+      }
+    }
+    return {
+      kind: isPdf ? 'pdf' : 'image',
+      mime: isPdf ? 'application/pdf' : (isPng ? 'image/png' : 'image/jpeg'),
+      pages: pages || 0
+    };
+  }
+
+  async function buildParts(upload) {
+    if (upload.kind === 'pdf') {
+      // PDFs gehen als Ganzes an Gemini. Das ist schneller und robuster als
+      // jede Seite im Browser zu rendern.
+      var raw = await blobToBase64(upload.file);
+      if (!raw) throw new AppError('PDF', 'Das PDF konnte nicht gelesen werden.');
+      return [{ mime_type: 'application/pdf', data: raw }];
+    }
+    return [await imagePart(upload.file)];
+  }
+
+  /* ==================================================================
+     KI-Prompts
+  ================================================================== */
+  var TUTOR_SYSTEM =
+    'Du bist ein geduldiger, ermutigender Tutor für Mathematik und Physik an einer Universität. ' +
+    'Du erklärst in klarer, einfacher Sprache auf Deutsch. Du erfindest niemals Zahlen, Werte oder Quellen. ' +
+    'Wenn eine Angabe nicht lesbar ist, sagst du das offen.';
+
+  var ANALYSIS_PROMPT = [
+    'Du bekommst Fotos oder Seiten einer Hausaufgabe in Mathematik oder Physik.',
+    '',
+    'DEINE AUFGABE',
+    '1. Teile den Inhalt in Aufgaben und Teilaufgaben (a, b, c …) auf.',
+    '2. Baue für jede Teilaufgabe eine Lernpyramide aus Rechenschritten.',
+    '',
+    'REGELN FÜR DIE PYRAMIDE',
+    '- steps[0] ist die BASIS: der erste konkrete Rechenschritt.',
+    '- Der letzte Schritt ist die SPITZE: das Endergebnis.',
+    '- Jeder Schritt ist so klein, dass man ihn in einem Gedanken rechnen kann.',
+    '- 3 bis 8 Schritte pro Teilaufgabe, nie mehr als 10.',
+    '- "title": 3 bis 6 Wörter, z. B. "Kräfte zerlegen".',
+    '- "task": was in diesem Schritt zu tun ist, in der Du-Form, OHNE die Lösung zu nennen.',
+    '- "answer": die konkrete Lösung dieses Schritts, kurz und eindeutig.',
+    '- "solution": der ausführliche Rechenweg dieses Schritts mit Formel und Einsetzen.',
+    '- "hint": ein erster Hinweis, der weiterhilft, aber die Lösung nicht verrät.',
+    '- Nutze echte Zahlen und Einheiten aus der Aufgabe.',
+    '- Sprache: Deutsch. Keine Markdown-Formatierung, keine Sternchen, keine Lattenzäune.',
+    '',
+    'FIGUREN',
+    '- Wenn eine Skizze, ein Diagramm oder eine Abbildung nötig ist und du sie nicht sicher lesen kannst:',
+    '  setze "figure_unreadable": true und formuliere in "figure_search_query" eine gute deutsche Suchanfrage',
+    '  nach passenden Lernquellen (z. B. "schiefe Ebene Kräftezerlegung Skizze").',
+    '- Erfinde niemals Werte aus einer unlesbaren Figur.',
+    '',
+    'AUSGABE',
+    'Antworte ausschließlich mit JSON in genau dieser Struktur:',
+    '{"tasks":[{"label":"Aufgabe 1","title":"kurzer Titel","subtasks":[{"label":"a","prompt":"Aufgabenstellung","figure_unreadable":false,"figure_search_query":"","steps":[{"title":"…","task":"…","answer":"…","solution":"…","hint":"…"}]}]}]}',
+    '',
+    'Keine Kommentare, kein Markdown, kein Text außerhalb des JSON.'
+  ].join('\n');
+
+  /* ==================================================================
+     Analyse: Aufgaben + Pyramiden
+  ================================================================== */
+  function normalizeAnalysis(raw, upload) {
+    var data = raw && typeof raw === 'object' ? raw : {};
+    var tasksIn = Array.isArray(data.tasks) ? data.tasks : (Array.isArray(data.aufgaben) ? data.aufgaben : []);
+    var tasks = [];
+
+    tasksIn.slice(0, 12).forEach(function (t, ti) {
+      if (!t || typeof t !== 'object') return;
+      var subsIn = Array.isArray(t.subtasks) ? t.subtasks : (Array.isArray(t.teilaugaben) ? t.teilaugaben : []);
+      if (!subsIn.length && Array.isArray(t.steps)) {
+        subsIn = [{ label: '', prompt: t.title || '', steps: t.steps }];
+      }
+      var subtasks = [];
+
+      subsIn.slice(0, 12).forEach(function (s, si) {
+        if (!s || typeof s !== 'object') return;
+        var stepsIn = Array.isArray(s.steps) ? s.steps : [];
+        var steps = [];
+        stepsIn.slice(0, 14).forEach(function (st, k) {
+          if (!st || typeof st !== 'object') return;
+          var step = {
+            id: 't' + (ti + 1) + '_s' + (si + 1) + '_x' + (k + 1),
+            title: safeText(st.title, 'Schritt ' + (k + 1)),
+            task: safeText(st.task || st.question || st.instruction, ''),
+            answer: safeText(st.answer || st.result, ''),
+            solution: safeText(st.solution || st.working || st.explanation, ''),
+            hint: safeText(st.hint, '')
+          };
+          if (step.task || step.solution || step.answer) steps.push(step);
+        });
+        if (!steps.length) return;
+        subtasks.push({
+          id: 't' + (ti + 1) + '_s' + (si + 1),
+          label: safeText(s.label, String.fromCharCode(97 + si)),
+          prompt: safeText(s.prompt || s.question || s.text, ''),
+          figure_unreadable: !!s.figure_unreadable,
+          figure_search_query: safeText(s.figure_search_query, ''),
+          figure_searched: false,
+          sources: [],
+          steps: steps
+        });
+      });
+
+      if (!subtasks.length) return;
+      tasks.push({
+        id: 't' + (ti + 1),
+        label: safeText(t.label, 'Aufgabe ' + (ti + 1)),
+        title: safeText(t.title, ''),
+        subtasks: subtasks
+      });
+    });
+
+    return { upload_id: upload.upload_id, created_at: nowIso(), tasks: tasks };
+  }
+
+  async function analyzeUpload(upload) {
+    try {
+      var parts = await buildParts(upload);
+      parts.push({ text: ANALYSIS_PROMPT });
+      var result = await geminiJson({
+        parts: parts,
+        system: TUTOR_SYSTEM,
+        maxOutputTokens: 16384,
+        temperature: 0.2
+      });
+      var analysis = normalizeAnalysis(result.json, upload);
+      if (!analysis.tasks.length) {
+        throw new AppError('NO_TASKS', 'Auf dieser Datei wurden keine Aufgaben erkannt. Bitte nutze ein schärferes Foto.');
+      }
+      if (!findUpload(upload.upload_id)) return;
+      await idbPut('analyses', analysis);
+      S.analyses[upload.upload_id] = analysis;
+      upload.status = 'ready';
+      upload.error = null;
+      await idbPut('uploads', upload);
+    } catch (err) {
+      if (!findUpload(upload.upload_id)) return;
+      upload.status = 'error';
+      upload.error = errText(err);
+      try { await idbPut('uploads', upload); } catch (e) {}
+      if (err && err.code === 'NO_KEY') {
+        toast('Bitte Gemini-Schlüssel in den Einstellungen eintragen.', 'error');
+      } else {
+        toast('Analyse fehlgeschlagen: ' + errText(err), 'error');
+      }
+    } finally {
+      delete S.analyzing[upload.upload_id];
+      if (S.view === 'list') render();
+      else if ((S.view === 'pyramid' || S.view === 'summary') && S.uploadId === upload.upload_id) render();
+      else renderIfList();
+    }
+  }
+
+  function renderIfList() { if (S.view === 'list') render(); }
+
+  /* ==================================================================
+     Fortschritt & Pyramide
+  ================================================================== */
+  function progressId(uploadId, subtaskId) { return uploadId + '::' + subtaskId; }
+
+  function peekProgress(uploadId, subtaskId) {
+    return S.progress[progressId(uploadId, subtaskId)] || {
+      id: progressId(uploadId, subtaskId),
+      upload_id: uploadId,
+      subtask_id: subtaskId,
+      current: 0,
+      done: false,
+      steps: {},
+      hints: {}
+    };
+  }
+
+  function getProgress(uploadId, subtaskId) {
+    var id = progressId(uploadId, subtaskId);
+    if (!S.progress[id]) {
+      S.progress[id] = {
+        id: id,
+        upload_id: uploadId,
+        subtask_id: subtaskId,
+        current: 0,
+        done: false,
+        steps: {},
+        hints: {},
+        created_at: nowIso(),
+        updated_at: nowIso()
+      };
+    }
+    return S.progress[id];
+  }
+
+  async function saveProgress(p) {
+    p.updated_at = nowIso();
+    S.progress[p.id] = p;
+    try { await idbPut('progress', p); } catch (e) { toast('Fortschritt konnte nicht gespeichert werden.', 'error'); }
+  }
+
+  function stepRecord(p, step) {
+    if (!p.steps[step.id]) {
+      p.steps[step.id] = { phase: 'input', attempts: 0, verdict: null, text: '', updated_at: nowIso() };
+    }
+    return p.steps[step.id];
+  }
+
+  function subtaskDone(uploadId, subtask) {
+    var p = peekProgress(uploadId, subtask.id);
+    return !!(p.done || p.current >= subtask.steps.length);
+  }
+
+  function allSubtasks(analysis) {
+    var out = [];
+    if (!analysis) return out;
+    analysis.tasks.forEach(function (task) {
+      task.subtasks.forEach(function (subtask) {
+        out.push({ task: task, subtask: subtask });
+      });
+    });
+    return out;
+  }
+
+  function uploadStats(uploadId, analysis) {
+    var list = allSubtasks(analysis);
+    var done = 0, stepsDone = 0, stepsTotal = 0;
+    list.forEach(function (entry) {
+      stepsTotal += entry.subtask.steps.length;
+      var p = peekProgress(uploadId, entry.subtask.id);
+      var sd = Math.min(p.current || 0, entry.subtask.steps.length);
+      stepsDone += p.done ? entry.subtask.steps.length : sd;
+      if (subtaskDone(uploadId, entry.subtask)) done++;
+    });
+    return { subtasks: list.length, done: done, stepsDone: stepsDone, stepsTotal: stepsTotal, complete: list.length > 0 && done === list.length };
+  }
+
+  function currentStepIndex(p, subtask) {
+    return Math.max(0, Math.min(p.current || 0, subtask.steps.length));
+  }
+
+  async function checkSummaryIfComplete(uploadId) {
+    var upload = findUpload(uploadId);
+    var analysis = S.analyses[uploadId];
+    if (!upload || !analysis) return;
+    if (!uploadStats(uploadId, analysis).complete) return;
+    if (S.summaries[uploadId]) return;
+    generateSummary(uploadId);
+  }
+
+  /* ==================================================================
+     Hinweise (unbegrenzt)
+  ================================================================== */
+  async function requestHint(upload, task, subtask, step, p) {
+    if (S.hintLoading[step.id]) return;
+
+    // Der erste Hinweis kommt direkt aus der Pyramide – ohne KI-Anfrage.
+    var existing = p.hints[step.id] || [];
+    if (!existing.length && step.hint) {
+      p.hints[step.id] = [step.hint];
+      await saveProgress(p);
+      render();
+      return;
+    }
+
+    S.hintLoading[step.id] = true;
+    render();
+
+    try {
+      var shown = p.hints[step.id] || [];
+      p.hints[step.id] = shown;
+      var prior = shown.length ? shown.map(function (h, i) { return (i + 1) + '. ' + h; }).join('\n') : '— noch keine —';
+      var prompt = [
+        'Eine Studierende hängt an einem Schritt einer Mathe- oder Physik-Aufgabe fest.',
+        '',
+        'Aufgabe: ' + (subtask.prompt || task.title || ''),
+        'Schritt: ' + step.title,
+        'Was zu tun ist: ' + (step.task || '—'),
+        'Erwartete Lösung (NICHT verraten): ' + (step.answer || step.solution || '—'),
+        'Bisherige Hinweise:',
+        prior,
+        '',
+        'Gib jetzt Hinweis Nummer ' + (shown.length + 1) + '.',
+        'Regeln: Er hilft konkret weiter, nennt aber nicht das Ergebnis. Nenne die passende Formel oder den nächsten Gedanken.',
+        'Höchstens zwei Sätze, freundlich, Deutsch, keine Floskeln, kein Markdown.',
+        'Antworte nur mit dem Hinweistext.'
+      ].join('\n');
+
+      var r = await geminiRequest({
+        parts: [{ text: prompt }],
+        system: TUTOR_SYSTEM,
+        maxOutputTokens: 400,
+        temperature: 0.5
+      });
+      var text = r.text.trim();
+      if (!text) throw new AppError('EMPTY', 'Der Hinweis konnte nicht erzeugt werden.');
+      p.hints[step.id] = shown.concat([text]);
+      await saveProgress(p);
+    } catch (err) {
+      toast(errText(err), 'error');
+    } finally {
+      delete S.hintLoading[step.id];
+      render();
+    }
+  }
+
+  /* ==================================================================
+     Web-Quellen für unlesbare Figuren
+  ================================================================== */
+  async function searchSources(analysis, task, subtask) {
+    if (S.sourcesLoading[subtask.id]) return;
+    S.sourcesLoading[subtask.id] = true;
+    render();
+    try {
+      var query = [subtask.figure_search_query, subtask.prompt, task.title]
+        .filter(Boolean).join(' — ').slice(0, 400);
+      var prompt = [
+        'Suche im Web nach seriösen Lernquellen zu dieser Aufgabe.',
+        'Geeignet sind Universitäts-Skripte, Lehrbücher, etablierte Lernportale und Fachseiten.',
+        'Nenne keine Lösungen, sondern nur Quellen, die das Verständnis unterstützen.',
+        '',
+        'Aufgabe: ' + query
+      ].join('\n');
+
+      var r = await geminiRequest({
+        parts: [{ text: prompt }],
+        system: TUTOR_SYSTEM,
+        tools: [{ google_search: {} }],
+        maxOutputTokens: 800,
+        temperature: 0.2
+      });
+
+      var cand = (r.data.candidates && r.data.candidates[0]) || {};
+      var chunks = (cand.groundingMetadata && cand.groundingMetadata.groundingChunks) || [];
+      var seen = {};
+      var sources = [];
+      chunks.forEach(function (c) {
+        var w = (c && c.web) || {};
+        var uri = w.uri || '';
+        if (!uri || !isHttpUrl(uri) || seen[uri]) return;
+        seen[uri] = true;
+        sources.push({
+          title: (w.title || hostOf(uri) || 'Quelle').slice(0, 180),
+          url: uri
+        });
+      });
+
+      subtask.sources = sources.slice(0, 5);
+      subtask.figure_searched = true;
+      await idbPut('analyses', analysis);
+      if (!sources.length) toast('Keine passenden Quellen gefunden.', 'error');
+    } catch (err) {
+      toast('Quellensuche fehlgeschlagen: ' + errText(err), 'error');
+    } finally {
+      delete S.sourcesLoading[subtask.id];
+      render();
+    }
+  }
+
+  /* ==================================================================
+     Abschlusszusammenfassung
+  ================================================================== */
+  function buildSummaryPayload(analysis) {
+    return analysis.tasks.map(function (task) {
+      return {
+        task_label: task.label,
+        task_title: task.title,
+        subtasks: task.subtasks.map(function (subtask) {
+          var p = peekProgress(analysis.upload_id, subtask.id);
+          var struggled = [];
+          subtask.steps.forEach(function (step) {
+            var rec = p.steps[step.id];
+            if (rec && rec.verdict === 'wrong') struggled.push(step.title);
+          });
+          return {
+            subtask_label: subtask.label,
+            prompt: subtask.prompt,
+            steps: subtask.steps.map(function (step) {
+              return { title: step.title, task: step.task, answer: step.answer, solution: step.solution };
+            }),
+            struggled_with: struggled
+          };
+        })
+      };
+    });
+  }
+
+  function normalizeSections(json, analysis) {
+    var raw = json && Array.isArray(json.sections) ? json.sections : [];
+    var flat = allSubtasks(analysis);
+    var byKey = {};
+    raw.forEach(function (s) {
+      if (!s || typeof s !== 'object') return;
+      var key = String(s.task_label || '') + '|' + String(s.subtask_label || '');
+      byKey[key] = s;
+    });
+    return flat.map(function (entry) {
+      var task = entry.task;
+      var subtask = entry.subtask;
+      var s = byKey[task.label + '|' + subtask.label] || {};
+      return {
+        task_label: task.label,
+        task_title: task.title || '',
+        subtask_label: subtask.label,
+        prompt: subtask.prompt || '',
+        solution_path: safeText(s.solution_path || s.loesungsweg, '—'),
+        common_mistake: safeText(s.common_mistake || s.haeufiger_fehler, '—'),
+        practice_question: safeText(s.practice_question || s.uebungsaufgabe, '—'),
+        practice_solution: safeText(s.practice_solution || s.loesung, '—')
+      };
+    });
+  }
+
+  async function generateSummary(uploadId) {
+    if (S.summaryInFlight[uploadId]) return;
+    var upload = findUpload(uploadId);
+    var analysis = S.analyses[uploadId];
+    if (!upload || !analysis) return;
+    if (!uploadStats(uploadId, analysis).complete) return;
+    if (S.summaries[uploadId]) return;
+
+    S.summaryInFlight[uploadId] = true;
+    if (S.view === 'pyramid' && S.uploadId === uploadId) render();
+    if (S.view === 'list' || (S.view === 'summary' && S.uploadId === uploadId)) render();
+
+    try {
+      var payload = buildSummaryPayload(analysis);
+      var prompt = [
+        'Du erstellst die Abschlusszusammenfassung für eine Studierende nach dem Bearbeiten einer Hausaufgabe.',
+        '',
+        'Eingabe: JSON mit Aufgaben, Teilaufgaben, allen Pyramidenschritten und den Schritten, bei denen die Studierende falsch lag (struggled_with).',
+        '',
+        'Erzeuge pro Teilaufgabe:',
+        '- solution_path: der komplette Lösungsweg in 3 bis 6 kurzen Sätzen, mit den zentralen Formeln und dem Endergebnis.',
+        '- common_mistake: der typische Fehler bei genau dieser Teilaufgabe, 1 bis 2 Sätze. Beziehe dich auf struggled_with, falls vorhanden.',
+        '- practice_question: eine ähnliche Übungsaufgabe mit anderen Zahlen und klarer Aufgabenstellung.',
+        '- practice_solution: die Lösung dazu, knapp, mit Rechenweg.',
+        '',
+        'Sprache: Deutsch, freundlich, knapp, kein Markdown. Erfinde keine Werte.',
+        '',
+        'Antworte nur mit JSON:',
+        '{"sections":[{"task_label":"Aufgabe 1","subtask_label":"a","solution_path":"…","common_mistake":"…","practice_question":"…","practice_solution":"…"}]}',
+        '',
+        'EINGABE:',
+        JSON.stringify(payload)
+      ].join('\n');
+
+      var r = await geminiJson({
+        parts: [{ text: prompt }],
+        system: TUTOR_SYSTEM,
+        maxOutputTokens: 8192,
+        temperature: 0.35
+      });
+
+      var sections = normalizeSections(r.json, analysis);
+      if (!sections.length) throw new AppError('EMPTY', 'Die Zusammenfassung blieb leer.');
+
+      var summary = { upload_id: uploadId, created_at: nowIso(), sections: sections };
+      await idbPut('summaries', summary);
+      S.summaries[uploadId] = summary;
+      toast('Deine Zusammenfassung ist fertig.', 'success');
+    } catch (err) {
+      toast('Zusammenfassung konnte nicht erstellt werden: ' + errText(err), 'error');
+    } finally {
+      delete S.summaryInFlight[uploadId];
+      if (S.view === 'list' || ((S.view === 'summary' || S.view === 'pyramid') && S.uploadId === uploadId)) render();
+    }
+  }
+
+  /* ==================================================================
+     Export als PDF / JPG
+  ================================================================== */
+  function safeFilename(name) {
+    return String(name || 'hausaufgabe')
+      .replace(/\.[a-z0-9]+$/i, '')
+      .replace(/[^\w\-äöüÄÖÜß ]+/g, ' ')
+      .trim()
+      .replace(/\s+/g, '-')
+      .slice(0, 60) || 'hausaufgabe';
+  }
+
+  function logoDocSvg() {
+    return '<svg width="26" height="26" viewBox="0 0 64 64" fill="none">' +
+      '<path d="M32 13 L53 49 H11 Z" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>' +
+      '<path d="M22 34 h20 M17 42 h30" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/></svg>';
+  }
+
+  function buildDocHtml(upload, analysis, summary) {
+    var date = new Date().toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
+    var sections = summary.sections.map(function (s) {
+      return [
+        '<div class="doc-sec">',
+        '<h3><span class="doc-tag">' + esc(s.task_label + ' ' + s.subtask_label) + '</span>' + esc(s.task_title || 'Teilaufgabe') + '</h3>',
+        s.prompt ? '<div class="doc-block"><div class="doc-label">Aufgabe</div><div class="doc-text">' + esc(s.prompt) + '</div></div>' : '',
+        '<div class="doc-block"><div class="doc-label">Lösungsweg</div><div class="doc-text">' + esc(s.solution_path) + '</div></div>',
+        '<div class="doc-block doc-warn"><div class="doc-label">Häufiger Fehler</div><div class="doc-text">' + esc(s.common_mistake) + '</div></div>',
+        '<div class="doc-block doc-practice"><div class="doc-label">Übungsaufgabe</div><div class="doc-text">' + esc(s.practice_question) + '</div>',
+        '<div class="doc-sol"><strong>Lösung:</strong> ' + esc(s.practice_solution) + '</div></div>',
+        '</div>'
+      ].join('');
+    }).join('');
+
+    return [
+      '<div class="doc">',
+      '<div class="doc-brand">',
+      '<div class="doc-logo">' + logoDocSvg() + '</div>',
+      '<div><div class="doc-name">PoMP</div><div class="doc-sub">Pyramids of Math &amp; Physics</div></div>',
+      '</div>',
+      '<div class="doc-title">' + esc(upload.name) + '</div>',
+      '<div class="doc-meta">Abschlusszusammenfassung · ' + esc(date) + '</div>',
+      sections,
+      '<div class="doc-foot">',
+      '<div class="grp"><span>Erstellt mit PoMP</span><span>Schritt für Schritt zum Ziel</span></div>',
+      '<div class="grp"><span>' + esc(analysis.tasks.length + ' Aufgaben · ' + allSubtasks(analysis).length + ' Teilaufgaben') + '</span><span>Alle Daten lokal auf deinem Gerät</span></div>',
+      '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  async function buildDocNode(uploadId) {
+    var upload = findUpload(uploadId);
+    var analysis = S.analyses[uploadId];
+    var summary = S.summaries[uploadId];
+    if (!upload || !analysis || !summary) throw new AppError('NO_SUMMARY', 'Die Zusammenfassung ist noch nicht fertig.');
+    var stage = $('#stage');
+    stage.innerHTML = buildDocHtml(upload, analysis, summary);
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch (e) {}
+    }
+    await sleep(40);
+    var node = stage.firstElementChild;
+    if (!node) throw new AppError('EXPORT', 'Die Zusammenfassung konnte nicht aufgebaut werden.');
+    return node;
+  }
+
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2500);
+  }
+
+  async function exportJpg(uploadId, button) {
+    var node;
+    try {
+      if (!window.html2canvas) throw new AppError('EXPORT', 'Der Bild-Export ist gerade nicht verfügbar. Bitte Seite neu laden.');
+      if (button) { button.disabled = true; button.dataset.label = button.innerHTML; button.innerHTML = '<span class="spinner"></span> JPG wird erstellt …'; }
+      node = await buildDocNode(uploadId);
+      var canvas = await window.html2canvas(node, { scale: 2, backgroundColor: '#ffffff', logging: false, useCORS: true });
+      var blob = await new Promise(function (resolve) { canvas.toBlob(resolve, 'image/jpeg', 0.93); });
+      if (!blob) throw new AppError('EXPORT', 'Das Bild konnte nicht erzeugt werden.');
+      downloadBlob(blob, 'pomp-' + safeFilename(findUpload(uploadId).name) + '.jpg');
+      toast('JPG gespeichert.', 'success');
+    } catch (err) {
+      toast(errText(err), 'error');
+    } finally {
+      if (button) { button.disabled = false; button.innerHTML = button.dataset.label || 'Als JPG laden'; }
+    }
+  }
+
+  async function exportPdf(uploadId, button) {
+    var node;
+    try {
+      if (!window.html2canvas || !window.jspdf) {
+        throw new AppError('EXPORT', 'Der PDF-Export ist gerade nicht verfügbar. Bitte Seite neu laden.');
+      }
+      if (button) { button.disabled = true; button.dataset.label = button.innerHTML; button.innerHTML = '<span class="spinner"></span> PDF wird erstellt …'; }
+      node = await buildDocNode(uploadId);
+      var canvas = await window.html2canvas(node, { scale: 2, backgroundColor: '#ffffff', logging: false, useCORS: true });
+
+      var jsPDF = window.jspdf.jsPDF;
+      var pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      var pageW = 210, pageH = 297, margin = 10;
+      var contentW = pageW - margin * 2;
+      var ratio = contentW / canvas.width;
+      var fullH = canvas.height * ratio;
+      var usableH = pageH - margin * 2;
+
+      if (fullH <= usableH) {
+        pdf.addImage(canvas.toDataURL('image/jpeg', 0.94), 'JPEG', margin, margin, contentW, fullH);
+      } else {
+        var sliceHpx = Math.floor(usableH / ratio) - 2;
+        var y = 0;
+        var page = 0;
+        while (y < canvas.height) {
+          var hpx = Math.min(sliceHpx, canvas.height - y);
+          var part = document.createElement('canvas');
+          part.width = canvas.width;
+          part.height = hpx;
+          var ctx = part.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, part.width, part.height);
+          ctx.drawImage(canvas, 0, y, canvas.width, hpx, 0, 0, canvas.width, hpx);
+          if (page > 0) pdf.addPage();
+          pdf.addImage(part.toDataURL('image/jpeg', 0.94), 'JPEG', margin, margin, contentW, hpx * ratio);
+          y += hpx;
+          page++;
+        }
+      }
+      pdf.save('pomp-' + safeFilename(findUpload(uploadId).name) + '.pdf');
+      toast('PDF gespeichert.', 'success');
+    } catch (err) {
+      toast(errText(err), 'error');
+    } finally {
+      if (button) { button.disabled = false; button.innerHTML = button.dataset.label || 'Als PDF laden'; }
+    }
+  }
+
+  /* ==================================================================
+     Icons & kleine Bausteine
+  ================================================================== */
+  var ICON_CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_TRASH = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_PDF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+  var ICON_IMAGE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="8.5" cy="9.5" r="1.6" stroke="currentColor" stroke-width="1.8"/><path d="m4 17 5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_LOCK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+
+  function findUpload(id) {
+    for (var i = 0; i < S.uploads.length; i++) {
+      if (S.uploads[i].upload_id === id) return S.uploads[i];
+    }
+    return null;
+  }
+
+  function statusOf(upload) {
+    if (upload.status === 'error') return 'error';
+    if (S.analyzing[upload.upload_id] || upload.status === 'analyzing') return 'analyzing';
+    return 'ready';
+  }
+
+  function go(view) {
+    S.view = view;
+    render();
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+
+  /* ==================================================================
+     View: Upload-Liste
+  ================================================================== */
+  function keyBannerHtml() {
+    return [
+      '<div class="banner warn">',
+      '<div class="banner-body">',
+      '<strong>Bitte Gemini-Schlüssel in den Einstellungen eintragen.</strong>',
+      '<p>Ohne Schlüssel kann die KI deine Aufgaben nicht aufteilen und keine Hinweise geben.</p>',
+      '</div>',
+      '<button class="btn btn-secondary btn-sm" data-action="go-settings">Einstellungen</button>',
+      '</div>'
+    ].join('');
+  }
+
+  function emptyStateHtml() {
+    return [
+      '<div class="empty">',
+      '<div class="glyph" aria-hidden="true">△</div>',
+      '<h3>Noch keine Hausaufgabe</h3>',
+      '<p>Lade ein Foto oder PDF deiner Aufgabe hoch. PoMP baut daraus eine Pyramide aus Rechenschritten – vom ersten Schritt bis zur Lösung.</p>',
+      '<button class="btn btn-primary" data-action="upload">Erste Datei hochladen</button>',
+      '<p class="small muted mt-2">JPG, PNG oder PDF · maximal 10 Seiten · maximal 12 MB</p>',
+      '</div>'
+    ].join('');
+  }
+
+  function uploadCardHtml(upload) {
+    var id = upload.upload_id;
+    var analysis = S.analyses[id];
+    var stats = analysis ? uploadStats(id, analysis) : null;
+    var state = statusOf(upload);
+    var complete = !!(stats && stats.complete);
+    var pct = stats && stats.stepsTotal ? Math.round((stats.stepsDone / stats.stepsTotal) * 100) : 0;
+
+    var badge;
+    if (state === 'analyzing') badge = '<span class="badge accent live"><span class="dot"></span>Wird analysiert …</span>';
+    else if (state === 'error') badge = '<span class="badge error"><span class="dot"></span>Analyse fehlgeschlagen</span>';
+    else if (complete) badge = '<span class="badge success"><span class="dot"></span>abgeschlossen</span>';
+    else badge = '<span class="badge"><span class="dot"></span>noch offen</span>';
+
+    var thumbClass = upload.kind === 'pdf' ? 'pdf' : 'img';
+    var thumbIcon = upload.kind === 'pdf' ? ICON_PDF : ICON_IMAGE;
+
+    var foot = '';
+    if (state === 'analyzing') {
+      foot = '<div class="row small muted"><span class="spinner"></span><span>Aufgaben werden erkannt …</span></div>';
+    } else if (state === 'error') {
+      foot = '<div class="stack-sm" style="width:100%">' +
+        '<div class="small" style="color:#991B1B">' + esc(upload.error || 'Die Analyse ist fehlgeschlagen.') + '</div>' +
+        '<div class="btn-row">' +
+        '<button class="btn btn-secondary btn-sm" data-action="retry" data-upload="' + esc(id) + '">Erneut versuchen</button>' +
+        '</div></div>';
+    } else {
+      var label = complete ? 'Zusammenfassung' : (stats && stats.stepsDone > 0 ? 'Fortsetzen' : 'Öffnen');
+      foot = [
+        '<div class="bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><span style="width:' + pct + '%"></span></div>',
+        '<div class="bar-label">' + (stats ? stats.stepsDone + ' / ' + stats.stepsTotal + ' Schritte' : '') + '</div>',
+        '<div class="btn-row" style="margin-left:auto">',
+        '<button class="btn btn-primary btn-sm" data-action="open-upload" data-upload="' + esc(id) + '">' + label + '</button>',
+        complete ? '<button class="btn btn-secondary btn-sm" data-action="open-summary" data-upload="' + esc(id) + '">Details</button>' : '',
+        '</div>'
+      ].join('');
+    }
+
+    return [
+      '<div class="card upload-card">',
+      '<div class="file-thumb ' + thumbClass + '" aria-hidden="true">' + thumbIcon + '</div>',
+      '<div class="upload-body">',
+      '<div class="row" style="flex-wrap:nowrap; align-items:flex-start">',
+      '<div class="upload-name" title="' + esc(upload.name) + '">' + esc(upload.name) + '</div>',
+      '<button class="icon-btn danger" style="margin-left:auto" data-action="ask-delete" data-upload="' + esc(id) + '" title="Upload löschen" aria-label="Upload löschen">' + ICON_TRASH + '</button>',
+      '</div>',
+      '<div class="upload-meta">' + badge + '<span>' + esc(fmtDate(upload.created_at)) + '</span><span>·</span><span>' +
+        (upload.kind === 'pdf' ? ((upload.pages || '?') + ' Seiten') : 'Bild') + '</span><span>·</span><span>' + esc(fmtBytes(upload.size)) + '</span></div>',
+      '<div class="upload-foot">' + foot + '</div>',
+      '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  function viewList() {
+    var uploads = S.uploads || [];
+    var notice = '<div class="banner" style="margin-top:24px">' +
+      '<div class="banner-body"><strong>Deine Daten bleiben bei dir.</strong>' +
+      '<p>Uploads, Pyramiden, Hinweise und Fortschritt liegen nur in diesem Browser auf deinem Gerät. Beim Löschen eines Uploads wird alles davon entfernt.</p></div>' +
+      '</div>';
+
+    return [
+      '<div class="wrap">',
+      '<div class="page-head">',
+      '<div><h1 class="page-title">Meine Uploads</h1>',
+      '<div class="page-sub">Hochladen, Pyramide hochklettern, verstehen.</div></div>',
+      '<div class="spacer"></div>',
+      '<button class="btn btn-primary" data-action="upload">Neue Datei hochladen</button>',
+      '</div>',
+      (S.settings.gemini_key ? '' : keyBannerHtml()),
+      (uploads.length ? '<div class="stack">' + uploads.map(uploadCardHtml).join('') + '</div>' : emptyStateHtml()),
+      notice,
+      '</div>'
+    ].join('');
+  }
+
+  /* ==================================================================
+     View: Pyramide
+  ================================================================== */
+  function chunksOfAnalysis(analysis) {
+    return allSubtasks(analysis);
+  }
+
+  function chipsHtml(uploadId, analysis, activeId) {
+    return '<div class="chips" role="tablist" aria-label="Teilaufgaben">' + chunksOfAnalysis(analysis).map(function (entry) {
+      var done = subtaskDone(uploadId, entry.subtask);
+      var cls = 'chip' + (done ? ' done' : '') + (entry.subtask.id === activeId ? ' active' : '');
+      return '<button class="' + cls + '" role="tab" aria-selected="' + (entry.subtask.id === activeId ? 'true' : 'false') + '" data-action="open-subtask" data-subtask="' + esc(entry.subtask.id) + '">' +
+        (done ? ICON_CHECK : '') +
+        '<span>' + esc(entry.task.label + ' ' + entry.subtask.label) + '</span>' +
+        '</button>';
+    }).join('') + '</div>';
+  }
+
+  function pyramidHtml(uploadId, subtask) {
+    var p = peekProgress(uploadId, subtask.id);
+    var total = subtask.steps.length;
+    var cur = p.done ? total : Math.min(p.current || 0, total);
+    var blocks = subtask.steps.map(function (step, i) {
+      var cls = 'pyr-block';
+      if (i < cur) cls += ' done clickable';
+      else if (i === cur && !p.done) cls += ' active';
+      else cls += ' locked';
+      if (step.id === S.reviewStepId) cls += ' review';
+      var clickable = i < cur;
+      var pct = 100 - Math.round((i / Math.max(1, total - 1)) * 44);
+      var content = '<span class="num">' + (i + 1) + '</span><span>' + esc(step.title) + '</span>';
+      var aria = ' aria-label="Schritt ' + (i + 1) + ': ' + esc(step.title) + '"';
+      if (i === cur && !p.done) aria += ' aria-current="step"';
+      if (clickable) {
+        return '<button type="button" class="' + cls + '" style="width:' + pct + '%"' +
+          ' data-action="review-step" data-step="' + esc(step.id) + '"' + aria + '>' + content + '</button>';
+      }
+      return '<div class="' + cls + '" style="width:' + pct + '%"' + aria + '>' + content + '</div>';
+    }).reverse().join('');
+
+    var pctDone = total ? Math.round((cur / total) * 100) : 0;
+
+    return [
+      '<div class="card pyramid-shell">',
+      '<div class="pyramid">' + blocks + '</div>',
+      '<div class="pyramid-foot">',
+      '<div class="bar"><span style="width:' + pctDone + '%"></span></div>',
+      '<div class="bar-label">' + cur + ' von ' + total + ' Schritten</div>',
+      '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  function reviewPanelHtml(ctx) {
+    if (!S.reviewStepId) return '';
+    var step = null;
+    ctx.subtask.steps.forEach(function (s) { if (s.id === S.reviewStepId) step = s; });
+    if (!step) return '';
+    var rec = ctx.p.steps[step.id];
+    return [
+      '<div class="card card-pad" style="margin-top:16px">',
+      '<div class="row" style="justify-content:space-between">',
+      '<div class="step-kicker" style="margin:0">Rückblick</div>',
+      '<button class="icon-btn" data-action="close-review" aria-label="Rückblick schließen">×</button>',
+      '</div>',
+      '<h3 style="margin-top:8px;font-size:17px">' + esc(step.title) + '</h3>',
+      '<div class="solution-box">',
+      '<div class="sol-label">Lösung</div><div class="sol-answer">' + esc(step.answer || '—') + '</div>',
+      '<div class="sol-label">Rechenweg</div><div class="sol-path">' + esc(step.solution || '—') + '</div>',
+      '</div>',
+      rec && rec.text ? '<div class="small muted mt-2">Deine Antwort: ' + esc(rec.text) + '</div>' : '',
+      '</div>'
+    ].join('');
+  }
+
+  function subtaskSourcesHtml(ctx) {
+    var subtask = ctx.subtask;
+    if (!subtask.figure_unreadable) return '';
+    var loading = !!S.sourcesLoading[subtask.id];
+    var body = '';
+
+    if (loading) {
+      body = '<div class="row small mt-2"><span class="spinner"></span><span>Web-Quellen werden gesucht …</span></div>';
+    } else if (!subtask.figure_searched) {
+      body = '<div class="row mt-2" style="justify-content:space-between">' +
+        '<span class="small">Die Figur auf dem Upload ist nicht sicher lesbar.</span>' +
+        '<button class="btn btn-secondary btn-sm" data-action="search-sources">Web-Quellen suchen</button>' +
+        '</div>';
+    } else if (subtask.sources && subtask.sources.length) {
+      body = '<div class="small mt-2">Passende Quellen zu dieser Figur:</div><ul class="source-list">' +
+        subtask.sources.map(function (src) {
+          return '<li><a href="' + esc(src.url) + '" target="_blank" rel="noopener noreferrer">' +
+            esc(src.title) + ' <span class="src-host">' + esc(hostOf(src.url)) + '</span></a></li>';
+        }).join('') + '</ul>';
+    } else {
+      body = '<p class="small mt-2">Figur nicht lesbar – bitte Aufgabe selbst prüfen.</p>';
+    }
+
+    return '<div class="notice"><strong>Figur nicht lesbar</strong>' + body + '</div>';
+  }
+
+  function currentContext() {
+    var upload = findUpload(S.uploadId);
+    if (!upload) return null;
+    var analysis = S.analyses[upload.upload_id];
+    if (!analysis) return null;
+    var entries = allSubtasks(analysis);
+    if (!entries.length) return null;
+    var entry = null;
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].subtask.id === S.subtaskId) { entry = entries[i]; break; }
+    }
+    if (!entry) entry = entries[0];
+    if (S.subtaskId !== entry.subtask.id) S.subtaskId = entry.subtask.id;
+    var p = getProgress(upload.upload_id, entry.subtask.id);
+    var idx = currentStepIndex(p, entry.subtask);
+    var step = entry.subtask.steps[idx] || null;
+    var rec = step ? stepRecord(p, step) : null;
+    return {
+      upload: upload,
+      analysis: analysis,
+      task: entry.task,
+      subtask: entry.subtask,
+      p: p,
+      idx: idx,
+      step: step,
+      rec: rec,
+      entries: entries
+    };
+  }
+
+  function hintsHtml(ctx) {
+    var step = ctx.step;
+    var list = ctx.p.hints[step.id] || [];
+    if (!list.length) return '';
+    return list.map(function (hint, i) {
+      return '<div class="hint-box"><div class="hint-head">Hinweis ' + (i + 1) + '</div>' + esc(hint) + '</div>';
+    }).join('');
+  }
+
+  function solutionHtml(step) {
+    return [
+      '<div class="solution-box">',
+      '<div class="sol-label">Lösung</div>',
+      '<div class="sol-answer">' + esc(step.answer || '—') + '</div>',
+      '<div class="sol-label">Rechenweg</div>',
+      '<div class="sol-path">' + esc(step.solution || '—') + '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  function stepCardHtml(ctx) {
+    var step = ctx.step;
+    var rec = ctx.rec;
+    var phase = rec.phase || 'input';
+    var total = ctx.subtask.steps.length;
+    var hintBtn = '<button class="btn btn-secondary" data-action="hint"' + (S.hintLoading[step.id] ? ' disabled' : '') + '>' +
+      (S.hintLoading[step.id] ? '<span class="spinner"></span> Hinweis wird geladen …' : 'Hinweis') + '</button>';
+
+    var head = [
+      '<div class="step-kicker">Schritt ' + (ctx.idx + 1) + ' von ' + total + ' · Teilaufgabe ' + esc(ctx.subtask.label) + '</div>',
+      '<h2 class="step-title">' + esc(step.title) + '</h2>',
+      step.task ? '<p class="step-task">' + esc(step.task) + '</p>' : ''
+    ].join('');
+
+    var inner = '';
+
+    if (phase === 'input' || phase === 'retry') {
+      var value = Object.prototype.hasOwnProperty.call(S.draft, step.id) ? S.draft[step.id] : (phase === 'retry' ? '' : (rec.text || ''));
+      inner = [
+        phase === 'retry' ? '<div class="verdict bad"><p>Noch ein Versuch – schau dir den Hinweis genau an.</p></div>' : '',
+        '<label class="field-label" for="answer-' + esc(step.id) + '">' + (phase === 'retry' ? 'Dein zweiter Versuch' : 'Deine Lösung') + '</label>',
+        '<textarea id="answer-' + esc(step.id) + '" class="answer-input" data-answer-input="' + esc(step.id) + '" placeholder="Schreibe deinen Rechenweg oder dein Ergebnis hierhin …" spellcheck="false">' + esc(value) + '</textarea>',
+        '<div class="input-help">Tipp: Mit Strg/Cmd + Enter vergleichst du direkt.</div>',
+        hintsHtml(ctx),
+        '<div class="step-nav">',
+        hintBtn,
+        '<span class="spacer"></span>',
+        '<button class="btn btn-primary" data-action="check-answer">Meine Lösung vergleichen</button>',
+        '</div>'
+      ].join('');
+    } else if (phase === 'check') {
+      inner = [
+        rec.text ? '<div class="small muted" style="margin-top:16px">Deine Lösung: <span class="strong" style="color:var(--text)">' + esc(rec.text) + '</span></div>' : '',
+        solutionHtml(step),
+        '<div class="verdict"><p>War deine Lösung richtig?</p>',
+        '<div class="btn-row">',
+        '<button class="btn btn-primary" data-action="verdict-right">Ja, richtig</button>',
+        '<button class="btn btn-secondary" data-action="verdict-wrong">Nein, falsch</button>',
+        '</div></div>',
+        hintsHtml(ctx)
+      ].join('');
+    } else if (phase === 'done') {
+      inner = [
+        solutionHtml(step),
+        '<div class="verdict ok"><p>Richtig – gut gemacht.</p></div>',
+        '<div class="step-nav"><span class="spacer"></span>',
+        '<button class="btn btn-primary" data-action="next-step">' + (ctx.idx + 1 >= total ? 'Teilaufgabe abschließen' : 'Nächster Schritt') + '</button>',
+        '</div>'
+      ].join('');
+    } else {
+      inner = [
+        '<div class="verdict bad"><p>Kein Problem – Fehler gehören zum Lernen. Schau dir den Weg an und mach weiter.</p></div>',
+        solutionHtml(step),
+        '<div class="step-nav"><span class="spacer"></span>',
+        '<button class="btn btn-primary" data-action="next-step">' + (ctx.idx + 1 >= total ? 'Teilaufgabe abschließen' : 'Verstanden, weiter') + '</button>',
+        '</div>'
+      ].join('');
+    }
+
+    return '<div class="card step-card">' + head + inner + subtaskSourcesHtml(ctx) + '</div>';
+  }
+
+  function donePanelHtml(ctx) {
+    var upload = ctx.upload;
+    var index = -1;
+    ctx.entries.forEach(function (e, i) { if (e.subtask.id === ctx.subtask.id) index = i; });
+    var next = index >= 0 ? ctx.entries[index + 1] : null;
+    var stats = uploadStats(upload.upload_id, ctx.analysis);
+    var allDone = stats.complete;
+    var summary = S.summaries[upload.upload_id];
+    var inflight = S.summaryInFlight[upload.upload_id];
+
+    var recap = ctx.subtask.steps.map(function (step, i) {
+      return '<div class="row" style="align-items:flex-start; gap:10px; padding:7px 0; border-bottom:1px dashed var(--line)">' +
+        '<span style="color:var(--success); flex:0 0 auto; margin-top:2px">' + ICON_CHECK + '</span>' +
+        '<div style="min-width:0"><div class="strong small">' + (i + 1) + '. ' + esc(step.title) + '</div>' +
+        '<div class="small muted">' + esc(step.answer || '') + '</div></div></div>';
+    }).join('');
+
+    var actions = '';
+    if (allDone) {
+      if (summary) actions = '<button class="btn btn-primary" data-action="open-summary">Zusammenfassung ansehen</button>';
+      else if (inflight) actions = '<button class="btn btn-secondary" disabled><span class="spinner"></span> Zusammenfassung wird erstellt …</button>';
+      else actions = '<button class="btn btn-primary" data-action="open-summary">Zusammenfassung erstellen</button>';
+    } else if (next) {
+      actions = '<button class="btn btn-primary" data-action="open-subtask" data-subtask="' + esc(next.subtask.id) + '">Weiter mit ' + esc(next.task.label + ' ' + next.subtask.label) + '</button>';
+    }
+
+    return [
+      '<div class="card done-panel">',
+      '<div class="done-badge">' + ICON_CHECK + '</div>',
+      '<h2>Teilaufgabe ' + esc(ctx.subtask.label) + ' geschafft</h2>',
+      '<p>Du hast alle ' + ctx.subtask.steps.length + ' Schritte erklommen.</p>',
+      '<div class="btn-row" style="justify-content:center">' + actions + '</div>',
+      '<div class="chat-recap" style="margin-top:24px; text-align:left">' +
+      '<div class="step-kicker">Rückblick</div>' + recap + '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  function viewPyramid() {
+    var upload = findUpload(S.uploadId);
+    if (!upload) { S.view = 'list'; return viewList(); }
+
+    var header = [
+      '<div class="wrap">',
+      '<button class="back-btn" data-action="go-list">← Meine Uploads</button>',
+      '<div class="page-head" style="margin-bottom:8px">',
+      '<div style="min-width:0"><h1 class="page-title" style="font-size:22px">' + esc(upload.name) + '</h1>',
+      '<div class="page-sub">' + (upload.kind === 'pdf' ? (upload.pages || '?') + ' Seiten · ' : '') + esc(fmtDate(upload.created_at)) + '</div></div>',
+      '</div>'
+    ].join('');
+
+    var analysis = S.analyses[upload.upload_id];
+
+    if (!analysis) {
+      if (statusOf(upload) === 'error') {
+        return header + [
+          '<div class="card card-pad mt-3">',
+          '<div class="banner error" style="margin-bottom:16px"><div class="banner-body">',
+          '<strong>Die Analyse hat nicht geklappt.</strong><p>' + esc(upload.error || 'Unbekannter Fehler.') + '</p></div></div>',
+          '<div class="btn-row">',
+          '<button class="btn btn-primary" data-action="retry" data-upload="' + esc(upload.upload_id) + '">Erneut versuchen</button>',
+          '<button class="btn btn-secondary" data-action="go-list">Zurück zur Liste</button>',
+          '</div></div>',
+          '</div>'
+        ].join('');
+      }
+      return header + [
+        '<div class="card card-pad mt-3 center" style="padding:48px 24px">',
+        '<div style="margin-bottom:16px"><span class="spinner lg"></span></div>',
+        '<h2 style="font-size:18px">Wird analysiert …</h2>',
+        '<p class="muted small mt-1">Die Aufgaben werden erkannt und in Pyramidenschritte zerlegt. Das dauert meist 10 bis 30 Sekunden.</p>',
+        '</div></div>'
+      ].join('');
+    }
+
+    var ctx = currentContext();
+    if (!ctx) {
+      return header + '<div class="card card-pad mt-3"><p class="muted">In dieser Datei wurden keine bearbeitbaren Aufgaben gefunden.</p></div></div>';
+    }
+
+    var body = [
+      chipsHtml(upload.upload_id, analysis, ctx.subtask.id),
+      ctx.subtask.prompt ? '<details class="card card-pad" style="margin-bottom:16px"><summary class="strong small" style="cursor:pointer">Aufgabenstellung anzeigen</summary><p class="small mt-2" style="white-space:pre-wrap">' + esc(ctx.subtask.prompt) + '</p></details>' : '',
+      pyramidHtml(upload.upload_id, ctx.subtask),
+      '<div class="mt-3">',
+      (ctx.p.done || ctx.idx >= ctx.subtask.steps.length) ? donePanelHtml(ctx) : stepCardHtml(ctx),
+      '</div>',
+      reviewPanelHtml(ctx)
+    ].join('');
+
+    return header + body + '</div>';
+  }
+
+  /* ==================================================================
+     View: Abschlusszusammenfassung
+  ================================================================== */
+  function summarySectionHtml(section, index) {
+    var showKey = 'sec_' + index;
+    var show = !!S.showPractice[showKey];
+    return [
+      '<div class="card summary-card">',
+      '<h3><span class="tag">' + esc(section.task_label + ' ' + section.subtask_label) + '</span>' + esc(section.task_title || 'Teilaufgabe') + '</h3>',
+      section.prompt ? '<div class="summary-section"><div class="label">Aufgabe</div><div class="body muted">' + esc(section.prompt) + '</div></div>' : '',
+      '<div class="summary-section"><div class="label">Lösungsweg</div><div class="body">' + esc(section.solution_path) + '</div></div>',
+      '<div class="summary-section mistake"><div class="label">Häufiger Fehler</div><div class="body">' + esc(section.common_mistake) + '</div></div>',
+      '<div class="summary-section practice"><div class="label">Übungsaufgabe</div><div class="body">' + esc(section.practice_question) + '</div>',
+      '<button class="reveal-solution" data-action="toggle-practice" data-key="' + esc(showKey) + '">' + (show ? 'Lösung ausblenden' : 'Lösung anzeigen') + '</button>',
+      show ? '<div class="practice-solution">' + esc(section.practice_solution) + '</div>' : '',
+      '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  function viewSummary() {
+    var upload = findUpload(S.uploadId);
+    if (!upload) { S.view = 'list'; return viewList(); }
+    var analysis = S.analyses[upload.upload_id];
+    var stats = analysis ? uploadStats(upload.upload_id, analysis) : null;
+    var complete = !!(stats && stats.complete);
+    var summary = S.summaries[upload.upload_id];
+    var inflight = !!S.summaryInFlight[upload.upload_id];
+
+    var header = [
+      '<div class="wrap">',
+      '<button class="back-btn" data-action="go-list">← Meine Uploads</button>',
+      '<div class="page-head">',
+      '<div style="min-width:0"><h1 class="page-title">Abschlusszusammenfassung</h1>',
+      '<div class="page-sub">' + esc(upload.name) + '</div></div>',
+      '</div>'
+    ].join('');
+
+    if (!analysis) {
+      return header + '<div class="card card-pad"><p class="muted">Für diesen Upload gibt es noch keine Analyse.</p></div></div>';
+    }
+
+    if (!complete) {
+      var pct = stats.stepsTotal ? Math.round((stats.stepsDone / stats.stepsTotal) * 100) : 0;
+      return header + [
+        '<div class="card card-pad">',
+        '<div class="row" style="justify-content:space-between"><span class="badge">noch offen</span><span class="small muted">' + stats.done + ' von ' + stats.subtasks + ' Teilaufgaben</span></div>',
+        '<h2 style="font-size:19px; margin-top:16px">Die Zusammenfassung kommt zum Schluss</h2>',
+        '<p class="muted small mt-1">Sobald du alle Teilaufgaben abgeschlossen hast, erstellt PoMP pro Teilaufgabe Lösungsweg, häufigen Fehler und eine Übungsaufgabe.</p>',
+        '<div class="mt-3"><div class="bar"><span style="width:' + pct + '%"></span></div>',
+        '<div class="bar-label mt-1">' + stats.stepsDone + ' von ' + stats.stepsTotal + ' Schritten</div></div>',
+        '<div class="btn-row mt-4"><button class="btn btn-primary" data-action="resume-upload">Weiterlernen</button></div>',
+        '</div></div>'
+      ].join('');
+    }
+
+    var content;
+    if (inflight) {
+      content = '<div class="card card-pad center" style="padding:40px 24px"><div><span class="spinner lg"></span></div>' +
+        '<h2 style="font-size:18px;margin-top:16px">Zusammenfassung wird erstellt …</h2>' +
+        '<p class="muted small mt-1">Lösungsweg, häufiger Fehler und Übungsaufgabe für jede Teilaufgabe.</p></div>';
+    } else if (!summary) {
+      content = '<div class="card card-pad center" style="padding:40px 24px">' +
+        '<h2 style="font-size:18px">Alles geschafft – Zeit für die Zusammenfassung</h2>' +
+        '<p class="muted small mt-1" style="max-width:440px;margin:6px auto 0">PoMP fasst jetzt jede Teilaufgabe zusammen und baut dir eine Übungsaufgabe.</p>' +
+        '<div class="btn-row mt-3" style="justify-content:center"><button class="btn btn-primary" data-action="create-summary">Zusammenfassung erstellen</button></div></div>';
+    } else {
+      content = [
+        '<div class="row" style="justify-content:flex-end; margin-bottom:16px">',
+        '<button class="btn btn-secondary btn-sm" data-action="download-jpg">Als JPG laden</button>',
+        '<button class="btn btn-primary btn-sm" data-action="download-pdf">Als PDF laden</button>',
+        '</div>',
+        '<div class="stack">' + summary.sections.map(summarySectionHtml).join('') + '</div>',
+        '<div class="banner" style="margin-top:24px"><div class="banner-body"><strong>Für den Export</strong>' +
+        '<p>PDF und JPG enthalten den Lösungsweg, den häufigen Fehler und die Übungsaufgabe mit Lösung.</p></div></div>'
+      ].join('');
+    }
+
+    return header + content + '</div>';
+  }
+
+  /* ==================================================================
+     View: Einstellungen
+  ================================================================== */
+  function viewSettings() {
+    var key = S.settings.gemini_key || '';
+    var model = S.settings.gemini_model || DEFAULT_MODEL;
+    var hasKey = !!key;
+
+    return [
+      '<div class="wrap">',
+      '<div class="page-head"><div><h1 class="page-title">Einstellungen</h1>',
+      '<div class="page-sub">Dein Schlüssel, dein Gerät, deine Daten.</div></div></div>',
+
+      '<div class="card settings-card">',
+      '<h2 style="font-size:17px">Gemini-Schlüssel</h2>',
+      '<p class="muted small mt-1">PoMP nutzt deinen eigenen Google-Gemini-Schlüssel. Er liegt nur in diesem Browser und wird bei jeder KI-Anfrage direkt an Google übergeben – nicht an einen PoMP-Server.</p>',
+
+      '<label class="field-label" for="key-input">API-Schlüssel</label>',
+      '<div class="key-row">',
+      '<input id="key-input" class="text-input mono" type="' + (S.showKey ? 'text' : 'password') + '" value="' + esc(key) + '" placeholder="AIza…" autocomplete="off" spellcheck="false" />',
+      '<button class="btn btn-secondary" data-action="toggle-key">' + (S.showKey ? 'Verbergen' : 'Anzeigen') + '</button>',
+      '</div>',
+      '<div class="help">Du bekommst einen kostenlosen Schlüssel in der Google AI Studio: aistudio.google.com/apikey</div>',
+
+      '<div class="row mt-3">',
+      '<span class="badge ' + (hasKey ? 'success' : '') + '"><span class="dot"></span>' + (hasKey ? 'Schlüssel gespeichert' : 'Noch kein Schlüssel') + '</span>',
+      '</div>',
+
+      '<div class="mt-3"><button class="btn btn-primary" data-action="save-key">Speichern</button>',
+      '<button class="btn btn-secondary" data-action="test-key" style="margin-left:8px">Verbindung testen</button>',
+      hasKey ? '<button class="btn btn-ghost" data-action="ask-clear-key" style="margin-left:8px">Schlüssel löschen</button>' : '',
+      '</div>',
+
+      '<div class="divider"></div>',
+
+      '<h2 style="font-size:17px">Modell</h2>',
+      '<p class="muted small mt-1">Flash-Modelle sind schnell und haben ein kostenloses Kontingent.</p>',
+      '<label class="field-label" for="model-input">Gemini-Modell</label>',
+      '<select id="model-input" class="select-input">' +
+        MODEL_OPTIONS.map(function (m) { return '<option value="' + esc(m) + '"' + (m === model ? ' selected' : '') + '>' + esc(m) + '</option>'; }).join('') +
+      '</select>',
+
+      '<div class="divider"></div>',
+
+      '<h2 style="font-size:17px">Deine Daten</h2>',
+      '<div class="mt-2">',
+      '<div class="kv"><span>Speicherort</span><span>IndexedDB in diesem Browser</span></div>',
+      '<div class="kv"><span>Konto / Login</span><span>nicht nötig</span></div>',
+      '<div class="kv"><span>Uploads</span><span>' + S.uploads.length + '</span></div>',
+      '<div class="kv"><span>Sitzungs-ID</span><span class="mono small">' + esc(String(S.session || '').slice(0, 12)) + '…</span></div>',
+      '</div>',
+      '<p class="help">Beim Löschen eines Uploads werden Datei, Pyramidenschritte, Hinweise, Fortschritt und Zusammenfassung gemeinsam entfernt.</p>',
+
+      '<div class="btn-row mt-3">',
+      '<button class="btn btn-secondary" data-action="go-list">Zurück zu den Uploads</button>',
+      S.uploads.length ? '<button class="btn btn-ghost" data-action="ask-delete-all" style="color:var(--danger)">Alle Hausaufgaben löschen</button>' : '',
+      '</div>',
+      '</div>',
+      '</div>'
+    ].join('');
+  }
+
+  /* ==================================================================
+     Render
+  ================================================================== */
+  function render() {
+    var root = $('#app');
+    if (!root) return;
+    if (S.bootError) {
+      root.innerHTML = '<div class="wrap"><div class="banner error"><div class="banner-body">' +
+        '<strong>PoMP konnte nicht starten.</strong><p>' + esc(S.bootError) + '</p></div></div></div>';
+      return;
+    }
+    try {
+      if (S.view === 'settings') root.innerHTML = viewSettings();
+      else if (S.view === 'pyramid') root.innerHTML = viewPyramid();
+      else if (S.view === 'summary') root.innerHTML = viewSummary();
+      else root.innerHTML = viewList();
+    } catch (err) {
+      console.error(err);
+      root.innerHTML = '<div class="wrap"><div class="banner error"><div class="banner-body"><strong>Ansicht konnte nicht geladen werden.</strong><p>' + esc(errText(err)) + '</p></div></div></div>';
+    }
+  }
+
+  /* ==================================================================
+     Uploads annehmen
+  ================================================================== */
+  function privacyModal() {
+    openModal([
+      '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="pv-title">',
+      '<div class="modal-icon" style="background:var(--accent-soft); color:#6B2C91">' + ICON_LOCK + '</div>',
+      '<h2 id="pv-title">Bevor du startest</h2>',
+      '<p>Deine Dateien werden <strong>nur lokal auf diesem Gerät</strong> gespeichert – im Browser, nicht auf einem Server. ',
+      'Für die Analyse gehen die Seiten direkt an Google Gemini, mit deinem eigenen Schlüssel. Er wird nicht gespeichert und nicht protokolliert.</p>',
+      '<div class="modal-actions">',
+      '<button class="btn btn-ghost" data-action="cancel-modal">Abbrechen</button>',
+      '<button class="btn btn-primary" data-action="privacy-accept" data-autofocus>Verstanden, hochladen</button>',
+      '</div>',
+      '</div>'
+    ].join(''));
+  }
+
+  async function handleFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList || []).filter(Boolean);
+    if (!files.length) return;
+    if (!S.settings.gemini_key) {
+      toast('Bitte Gemini-Schlüssel in den Einstellungen eintragen.', 'error');
+      go('settings');
+      return;
+    }
+    var ack = false;
+    try { ack = localStorage.getItem(PRIVACY_KEY) === '1'; } catch (e) {}
+    if (!ack) {
+      S.pendingFiles = files;
+      privacyModal();
+      return;
+    }
+    await acceptFiles(files);
+  }
+
+  async function acceptFiles(files) {
+    if (!S.settings.gemini_key) {
+      toast('Bitte Gemini-Schlüssel in den Einstellungen eintragen.', 'error');
+      go('settings');
+      return;
+    }
+    var accepted = 0;
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      try {
+        var meta = await validateFile(file);
+        var rec = {
+          upload_id: uid('upl'),
+          session_id: S.session,
+          name: file.name || 'Hausaufgabe',
+          mime: meta.mime,
+          kind: meta.kind,
+          pages: meta.pages,
+          size: file.size,
+          created_at: nowIso(),
+          status: 'analyzing',
+          error: null,
+          file: file
+        };
+        await idbPut('uploads', rec);
+        S.uploads.unshift(rec);
+        S.analyzing[rec.upload_id] = true;
+        accepted++;
+        render();
+        analyzeUpload(rec);
+      } catch (err) {
+        toast(errText(err), 'error');
+      }
+    }
+    if (accepted) {
+      toast(accepted === 1 ? 'Datei hochgeladen. Die Analyse läuft.' : accepted + ' Dateien hochgeladen. Die Analysen laufen.', 'success');
+    }
+  }
+
+  async function retryAnalysis(uploadId) {
+    var upload = findUpload(uploadId);
+    if (!upload) return;
+    if (!upload.file) {
+      toast('Die Datei ist nicht mehr vorhanden. Bitte lösche den Upload und lade sie erneut.', 'error');
+      return;
+    }
+    upload.status = 'analyzing';
+    upload.error = null;
+    try { await idbPut('uploads', upload); } catch (e) {}
+    S.analyzing[uploadId] = true;
+    render();
+    analyzeUpload(upload);
+  }
+
+  function openUpload(uploadId) {
+    var upload = findUpload(uploadId);
+    if (!upload) return;
+    S.uploadId = uploadId;
+    S.reviewStepId = null;
+    var analysis = S.analyses[uploadId];
+    if (!analysis) { S.view = 'pyramid'; S.subtaskId = null; render(); scrollTop(); return; }
+
+    var stats = uploadStats(uploadId, analysis);
+    if (stats.complete) {
+      S.view = 'summary';
+      render();
+      scrollTop();
+      if (!S.summaries[uploadId] && !S.summaryInFlight[uploadId]) generateSummary(uploadId);
+      return;
+    }
+    var entries = allSubtasks(analysis);
+    var next = null;
+    for (var i = 0; i < entries.length; i++) {
+      if (!subtaskDone(uploadId, entries[i].subtask)) { next = entries[i]; break; }
+    }
+    S.subtaskId = next ? next.subtask.id : (entries[0] ? entries[0].subtask.id : null);
+    S.view = 'pyramid';
+    render();
+    scrollTop();
+  }
+
+  function scrollTop() {
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+
+  /* ==================================================================
+     Löschen
+  ================================================================== */
+  function askDelete(uploadId) {
+    var upload = findUpload(uploadId);
+    if (!upload) return;
+    openModal([
+      '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="del-title">',
+      '<div class="modal-icon">' + ICON_TRASH + '</div>',
+      '<h2 id="del-title">Upload endgültig löschen?</h2>',
+      '<p>„' + esc(upload.name) + '“ wird mit Datei, Pyramidenschritten, Hinweisen, Fortschritt und Zusammenfassung von diesem Gerät entfernt. Das lässt sich nicht rückgängig machen.</p>',
+      '<div class="modal-actions">',
+      '<button class="btn btn-secondary" data-action="cancel-modal" data-autofocus>Abbrechen</button>',
+      '<button class="btn btn-danger" data-action="confirm-delete" data-upload="' + esc(uploadId) + '">Endgültig löschen</button>',
+      '</div>',
+      '</div>'
+    ].join(''));
+  }
+
+  async function deleteUpload(uploadId) {
+    closeModal();
+    try {
+      var keys = Object.keys(S.progress).filter(function (k) { return S.progress[k].upload_id === uploadId; });
+      for (var i = 0; i < keys.length; i++) {
+        await idbDelete('progress', keys[i]);
+        delete S.progress[keys[i]];
+      }
+      await idbDelete('analyses', uploadId);
+      await idbDelete('summaries', uploadId);
+      await idbDelete('uploads', uploadId);
+
+      delete S.analyses[uploadId];
+      delete S.summaries[uploadId];
+      delete S.analyzing[uploadId];
+      S.uploads = S.uploads.filter(function (u) { return u.upload_id !== uploadId; });
+
+      if (S.uploadId === uploadId) {
+        S.uploadId = null;
+        S.subtaskId = null;
+        S.reviewStepId = null;
+        if (S.view !== 'list') S.view = 'list';
+      }
+      toast('Upload endgültig gelöscht.', 'success');
+      render();
+    } catch (err) {
+      toast('Löschen fehlgeschlagen: ' + errText(err), 'error');
+    }
+  }
+
+  function askDeleteAll() {
+    openModal([
+      '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="delall-title">',
+      '<div class="modal-icon">' + ICON_TRASH + '</div>',
+      '<h2 id="delall-title">Alle Hausaufgaben löschen?</h2>',
+      '<p>Alle Uploads, Pyramiden, Hinweise, Fortschritte und Zusammenfassungen auf diesem Gerät werden entfernt. Dein Gemini-Schlüssel bleibt in den Einstellungen gespeichert.</p>',
+      '<div class="modal-actions">',
+      '<button class="btn btn-secondary" data-action="cancel-modal" data-autofocus>Abbrechen</button>',
+      '<button class="btn btn-danger" data-action="confirm-delete-all">Endgültig löschen</button>',
+      '</div>',
+      '</div>'
+    ].join(''));
+  }
+
+  async function deleteAllUploads() {
+    closeModal();
+    try {
+      var db = await openDb();
+      var stores = ['uploads', 'analyses', 'progress', 'summaries'];
+      for (var i = 0; i < stores.length; i++) {
+        await new Promise(function (resolve, reject) {
+          var t = db.transaction(stores[i], 'readwrite');
+          t.objectStore(stores[i]).clear();
+          t.oncomplete = resolve;
+          t.onerror = function () { reject(t.error); };
+        });
+      }
+      S.uploads = [];
+      S.analyses = {};
+      S.progress = {};
+      S.summaries = {};
+      S.uploadId = null;
+      S.subtaskId = null;
+      S.view = 'list';
+      toast('Alle Hausaufgaben wurden gelöscht.', 'success');
+      render();
+    } catch (err) {
+      toast('Löschen fehlgeschlagen: ' + errText(err), 'error');
+    }
+  }
+
+  /* ==================================================================
+     Schlüssel
+  ================================================================== */
+  async function saveKey() {
+    var input = $('#key-input');
+    var modelSelect = $('#model-input');
+    var key = input ? input.value.trim() : '';
+    var model = modelSelect ? modelSelect.value : (S.settings.gemini_model || DEFAULT_MODEL);
+
+    S.settings.gemini_key = key;
+    S.settings.gemini_model = model;
+    try {
+      await setSetting('gemini_key', key);
+      await setSetting('gemini_model', model);
+      toast(key ? 'Einstellungen gespeichert.' : 'Schlüssel entfernt.', key ? 'success' : undefined);
+      render();
+    } catch (err) {
+      toast('Speichern fehlgeschlagen: ' + errText(err), 'error');
+    }
+  }
+
+  async function clearKey() {
+    closeModal();
+    try {
+      await setSetting('gemini_key', '');
+      S.settings.gemini_key = '';
+      toast('Schlüssel gelöscht.', 'success');
+      render();
+    } catch (err) {
+      toast('Löschen fehlgeschlagen: ' + errText(err), 'error');
+    }
+  }
+
+  function askClearKey() {
+    openModal([
+      '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="ck-title">',
+      '<h2 id="ck-title">Schlüssel löschen?</h2>',
+      '<p>Der Gemini-Schlüssel wird aus diesem Browser entfernt. Ohne Schlüssel kann keine Analyse mehr gestartet werden.</p>',
+      '<div class="modal-actions">',
+      '<button class="btn btn-secondary" data-action="cancel-modal" data-autofocus>Abbrechen</button>',
+      '<button class="btn btn-danger" data-action="confirm-clear-key">Schlüssel löschen</button>',
+      '</div>',
+      '</div>'
+    ].join(''));
+  }
+
+  async function testKey(button) {
+    var input = $('#key-input');
+    var typed = input ? input.value.trim() : '';
+    if (typed && typed !== S.settings.gemini_key) {
+      S.settings.gemini_key = typed;
+      try { await setSetting('gemini_key', typed); } catch (e) {}
+    }
+    var old = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner"></span> Verbindung wird geprüft …';
+    try {
+      var r = await geminiRequest({
+        parts: [{ text: 'Antworte ausschließlich mit dem Wort OK.' }],
+        maxOutputTokens: 200,
+        temperature: 0
+      });
+      toast('Verbindung steht (' + r.model + ').', 'success');
+    } catch (err) {
+      toast(errText(err), 'error');
+    } finally {
+      button.disabled = false;
+      button.innerHTML = old;
+    }
+  }
+
+  /* ==================================================================
+     Aktionen
+  ================================================================== */
+  async function handleAction(action, el) {
+    var uploadId = el ? el.getAttribute('data-upload') : null;
+
+    switch (action) {
+      case 'go-list':
+        S.view = 'list';
+        S.uploadId = null;
+        S.subtaskId = null;
+        S.reviewStepId = null;
+        render();
+        scrollTop();
+        return;
+
+      case 'go-settings':
+        S.view = 'settings';
+        render();
+        scrollTop();
+        return;
+
+      case 'upload':
+        var input = $('#file-input');
+        if (input) input.click();
+        return;
+
+      case 'privacy-accept':
+        try { localStorage.setItem(PRIVACY_KEY, '1'); } catch (e) {}
+        closeModal();
+        if (S.pendingFiles && S.pendingFiles.length) {
+          var pending = S.pendingFiles;
+          S.pendingFiles = null;
+          await acceptFiles(pending);
+        }
+        return;
+
+      case 'open-upload':
+        openUpload(uploadId);
+        return;
+
+      case 'retry':
+        await retryAnalysis(uploadId);
+        return;
+
+      case 'ask-delete':
+        askDelete(uploadId);
+        return;
+
+      case 'confirm-delete':
+        await deleteUpload(uploadId);
+        return;
+
+      case 'ask-delete-all':
+        askDeleteAll();
+        return;
+
+      case 'confirm-delete-all':
+        await deleteAllUploads();
+        return;
+
+      case 'cancel-modal':
+        closeModal();
+        return;
+
+      case 'open-subtask':
+        S.subtaskId = el.getAttribute('data-subtask');
+        S.reviewStepId = null;
+        render();
+        scrollTop();
+        return;
+
+      case 'resume-upload':
+        openUpload(S.uploadId);
+        return;
+
+      case 'review-step':
+        var stepId = el.getAttribute('data-step');
+        S.reviewStepId = S.reviewStepId === stepId ? null : stepId;
+        render();
+        return;
+
+      case 'close-review':
+        S.reviewStepId = null;
+        render();
+        return;
+
+      case 'hint': {
+        var ctxHint = currentContext();
+        if (!ctxHint || !ctxHint.step) return;
+        await requestHint(ctxHint.upload, ctxHint.task, ctxHint.subtask, ctxHint.step, ctxHint.p);
+        return;
+      }
+
+      case 'check-answer': {
+        var ctxCheck = currentContext();
+        if (!ctxCheck || !ctxCheck.step) return;
+        var area = document.querySelector('[data-answer-input]');
+        var text = area ? area.value.trim() : (S.draft[ctxCheck.step.id] || '');
+        if (!text) { toast('Bitte schreibe zuerst deine Lösung auf.'); if (area) area.focus(); return; }
+        S.draft[ctxCheck.step.id] = text;
+        ctxCheck.rec.text = text;
+        ctxCheck.rec.phase = 'check';
+        ctxCheck.rec.updated_at = nowIso();
+        await saveProgress(ctxCheck.p);
+        render();
+        return;
+      }
+
+      case 'verdict-right': {
+        var ctxRight = currentContext();
+        if (!ctxRight || !ctxRight.step) return;
+        ctxRight.rec.verdict = 'right';
+        ctxRight.rec.phase = 'done';
+        ctxRight.rec.updated_at = nowIso();
+        await saveProgress(ctxRight.p);
+        render();
+        return;
+      }
+
+      case 'verdict-wrong': {
+        var ctxWrong = currentContext();
+        if (!ctxWrong || !ctxWrong.step) return;
+        ctxWrong.rec.verdict = 'wrong';
+        ctxWrong.rec.attempts = (ctxWrong.rec.attempts || 0) + 1;
+        ctxWrong.rec.text = '';
+        ctxWrong.rec.updated_at = nowIso();
+        delete S.draft[ctxWrong.step.id];
+        if (ctxWrong.rec.attempts >= 2) {
+          ctxWrong.rec.phase = 'revealed';
+        } else {
+          ctxWrong.rec.phase = 'retry';
+        }
+        await saveProgress(ctxWrong.p);
+        render();
+        return;
+      }
+
+      case 'next-step': {
+        var ctxNext = currentContext();
+        if (!ctxNext || !ctxNext.step) return;
+        var total = ctxNext.subtask.steps.length;
+        if (ctxNext.p.current < total) ctxNext.p.current += 1;
+        if (ctxNext.p.current >= total) ctxNext.p.done = true;
+        delete S.draft[ctxNext.step.id];
+        S.reviewStepId = null;
+        await saveProgress(ctxNext.p);
+        render();
+        scrollTop();
+        if (ctxNext.p.done) await checkSummaryIfComplete(ctxNext.upload.upload_id);
+        return;
+      }
+
+      case 'search-sources': {
+        var ctxSrc = currentContext();
+        if (!ctxSrc) return;
+        await searchSources(ctxSrc.analysis, ctxSrc.task, ctxSrc.subtask);
+        return;
+      }
+
+      case 'open-summary':
+        S.uploadId = uploadId || S.uploadId;
+        S.view = 'summary';
+        render();
+        scrollTop();
+        if (S.uploadId) {
+          var an = S.analyses[S.uploadId];
+          var stats = an ? uploadStats(S.uploadId, an) : null;
+          if (stats && stats.complete && !S.summaries[S.uploadId] && !S.summaryInFlight[S.uploadId]) {
+            generateSummary(S.uploadId);
+          }
+        }
+        return;
+
+      case 'create-summary':
+        if (S.uploadId) await generateSummary(S.uploadId);
+        return;
+
+      case 'download-pdf':
+        if (S.uploadId) await exportPdf(S.uploadId, el);
+        return;
+
+      case 'download-jpg':
+        if (S.uploadId) await exportJpg(S.uploadId, el);
+        return;
+
+      case 'toggle-practice': {
+        var key = el.getAttribute('data-key');
+        S.showPractice[key] = !S.showPractice[key];
+        render();
+        return;
+      }
+
+      case 'save-key':
+        await saveKey();
+        return;
+
+      case 'toggle-key':
+        S.showKey = !S.showKey;
+        render();
+        return;
+
+      case 'test-key':
+        await testKey(el);
+        return;
+
+      case 'ask-clear-key':
+        askClearKey();
+        return;
+
+      case 'confirm-clear-key':
+        await clearKey();
+        return;
+
+      default:
+        return;
+    }
+  }
+
+  /* ==================================================================
+     Events
+  ================================================================== */
+  function wireEvents() {
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target.closest('[data-action]') : null;
+      if (!el) return;
+      var action = el.getAttribute('data-action');
+      if (action === 'backdrop') {
+        if (e.target === el) closeModal();
+        return;
+      }
+      if (action === 'cancel-modal') {
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      e.preventDefault();
+      Promise.resolve(handleAction(action, el)).catch(function (err) {
+        console.error(err);
+        toast(errText(err), 'error');
+      });
+    });
+
+    document.addEventListener('input', function (e) {
+      var t = e.target;
+      if (!t || !t.matches) return;
+      if (t.matches('[data-answer-input]')) {
+        S.draft[t.getAttribute('data-answer-input')] = t.value;
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modalOpen()) {
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        var target = e.target;
+        if (target && target.matches && target.matches('[data-answer-input]')) {
+          e.preventDefault();
+          Promise.resolve(handleAction('check-answer', target)).catch(function (err) { toast(errText(err), 'error'); });
+        }
+      }
+    });
+
+    var fileInput = $('#file-input');
+    if (fileInput) {
+      fileInput.addEventListener('change', function () {
+        var files = Array.prototype.slice.call(fileInput.files || []);
+        fileInput.value = '';
+        handleFiles(files).catch(function (err) { toast(errText(err), 'error'); });
+      });
+    }
+
+    document.addEventListener('dragover', function (e) {
+      if (S.view !== 'list') return;
+      if (e.dataTransfer && Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') >= 0) {
+        e.preventDefault();
+      }
+    });
+
+    document.addEventListener('drop', function (e) {
+      if (S.view !== 'list') return;
+      if (!e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files.length) return;
+      e.preventDefault();
+      handleFiles(e.dataTransfer.files).catch(function (err) { toast(errText(err), 'error'); });
+    });
+  }
+
+  /* ==================================================================
+     Start
+  ================================================================== */
+  async function loadState() {
+    var uploads = await idbAll('uploads');
+    S.uploads = uploads
+      .filter(function (u) { return u && u.session_id === S.session; })
+      .sort(function (a, b) { return String(b.created_at).localeCompare(String(a.created_at)); });
+
+    var ids = {};
+    S.uploads.forEach(function (u) { ids[u.upload_id] = true; });
+
+    var analyses = await idbAll('analyses');
+    S.analyses = {};
+    analyses.forEach(function (a) {
+      if (a && ids[a.upload_id]) S.analyses[a.upload_id] = a;
+    });
+
+    var progress = await idbAll('progress');
+    S.progress = {};
+    progress.forEach(function (p) {
+      if (p && p.id && ids[p.upload_id]) S.progress[p.id] = p;
+    });
+
+    var summaries = await idbAll('summaries');
+    S.summaries = {};
+    summaries.forEach(function (s) {
+      if (s && ids[s.upload_id]) S.summaries[s.upload_id] = s;
+    });
+
+    for (var i = 0; i < S.uploads.length; i++) {
+      var u = S.uploads[i];
+      if (u.status === 'analyzing' && S.analyses[u.upload_id]) {
+        u.status = 'ready';
+        try { await idbPut('uploads', u); } catch (e) {}
+      } else if (u.status === 'analyzing' && !S.analyzing[u.upload_id]) {
+        u.status = 'error';
+        u.error = 'Die Analyse wurde unterbrochen. Bitte erneut versuchen.';
+        try { await idbPut('uploads', u); } catch (e) {}
+      }
+    }
+  }
+
+  async function init() {
+    S.session = getSessionId();
+    S.showKey = false;
+
+    if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    try {
+      await openDb();
+      S.settings.gemini_key = await getApiKey();
+      S.settings.gemini_model = await getModel();
+      await loadState();
+    } catch (err) {
+      console.error(err);
+      S.bootError = errText(err) + ' Bitte prüfe, ob dein Browser lokale Speicherung im privaten Modus erlaubt.';
+    }
+
+    wireEvents();
+    render();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
